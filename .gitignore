@@ -3,4 +3,13 @@ testing.ahk
 .vscode/launch.json
 /V1/PyScript/virtualenv
 .vscode/settings.json
-
+/templogs/*
+/V1/Other Stuff/*
+/V1/Testing Features/*
+/workspaces/*
+/V1/PyScript/*
+/V1/Output/*
+DiscordCopy
+Import.ahk
+/V2/*
+/V1/README.MD
