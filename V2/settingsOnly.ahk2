@@ -1,0 +1,66 @@
+#Requires AutoHotkey v2.0
+#Include C:\Users\tijnb\Desktop\Programming\Autohotkey\Personal\library\ImportantInclude.ahk2
+
+; LogWindowGUI(*) {
+;     global LogWindow := Gui()
+
+;     LogWindow.BackColor := "2b2b2b"
+;     LogWindow.Color := "white"
+;     LogWindow.SetFont("s16 cWhite", "Jetbrains Mono")
+;     LogWindowHWND := LogWindow.Hwnd
+;     LogWindow.Opt("+Resize")
+
+;     LogWindow.Add("Tab", "x10 y10 w660 h460 Background2b2b2b vLogs", ["Invoices", "Transactions", "Finances"])
+;     LogWindow["Logs"].UseTab(1)
+;     LogWindow.Add("Edit", "w660 h425 x10 y45 Background211a1a vInvoiceLogs")
+;     LogWindow["Logs"].UseTab(2)
+;     LogWindow.Add("Edit", "w660 h425 x10 y45 Background211a1a vTransactionLogs")
+;     LogWindow["Logs"].UseTab(3)
+;     LogWindow.Add("Edit", "w660 h425 x10 y45 Background211a1a vFinanceLogs")
+;     SetWindowColor(LogWindowHWND, RgbToBgr(0xFFFFFF), 0x2B2B2B, 0x2B2B2B)
+;     LogWindow.Show("w680 h480")
+; }
+; RgbToBgr(color) => ((Color >> 16) & 0xFF) | (Color & 0x00FF00) | ((Color & 0xFF) << 16)
+
+; LoadLogs(filepath, controlname) {
+;     static prevTime := 0
+
+;     currTime := 0
+;     loop files, filepath "\*.txt"
+;     {
+;         fileTime := FileGetTime(A_LoopFileFullPath, "M")
+;         if (filetime > currTime)
+;         {
+;             currTime := fileTime
+;             currFile := A_LoopFileFullPath
+;         }
+;     }
+
+;     if (currTime > prevTime) {
+;         prevTime := currTime
+;         LoadedLog := FileRead(currFile)
+;         controlname.Value := LoadedLog
+;     }
+
+; }
+; LogWindowGUI()
+; SetTimer((*) => LoadLogs("C:\Users\tijnb\Desktop\Programming\Autohotkey\Personal\library\Debuglog\Logs-v2\Finances_V2.ahk2", LogWindow["InvoiceLogs"]), 1000)
+
+InvoiceSettingsGUI(*) {
+    InvoiceSettings := Gui()
+    InvoiceSettings.Title := "Invoice Settings"
+    DefaultSettings("2b2b2b", "white", InvoiceSettings)
+
+    InvoiceSettings.Add("Button", "x15 y10 w350 h50 vInvoiceReloader", "Reload Invoices")
+    DoButtonStuff(InvoiceSettings, "InvoiceReloader", "211a1a", empty)
+    InvoiceSettings.Add("Button", "x15 y+15 w350 h50 vTotalProfitsReload", "Reload Total Profits")
+    DoButtonStuff(InvoiceSettings, "TotalProfitsReload", "211a1a", empty)
+    InvoiceSettings.Add("Button", "x15 y+15 w350 h50 vInvoiceDirOpen", "Open Invoice Folder")
+    DoButtonStuff(InvoiceSettings, "InvoiceDirOpen", "211a1a", empty)
+    InvoiceSettings.Add("Button", "x15 y+15 w350 h50 vOpenInvoiceLogs", "Show Invoice Logs")
+    DoButtonStuff(InvoiceSettings, "OpenInvoiceLogs", "211a1a", empty)
+
+    InvoiceSettings.Show("w380 h270")
+}
+
+InvoiceSettingsGUI()

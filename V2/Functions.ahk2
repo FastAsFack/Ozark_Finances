@@ -1,0 +1,471 @@
+#Requires AutoHotkey v2.0
+#SingleInstance Force
+#Include Finance_ExternalGuis.ahk2
+#Include C:\Users\tijnb\Desktop\Programming\Autohotkey\Personal\library\ImportantInclude.ahk2
+#Include C:\Users\tijnb\Desktop\Programming\Autohotkey\Personal\MainData\sqlite.ahk2
+
+; #Region -- Tab Change --
+
+OnTabChanges(*) {
+    CurrentTab := Finance["MotherControl"].Text
+    If (CurrentTab = "Invoices") {
+        ScreenWidth := A_ScreenWidth
+        ScreenHeight := A_ScreenHeight
+
+        GuiWidth := 1120
+        GuiHeight := 700
+
+        DebugLog("GuiWidth = " GuiWidth)
+        DebugLog("GuiHeight = " GuiHeight)
+
+        MotherControlWidth := GuiWidth - 20
+        MotherControlHeight := GuiHeight - 20
+
+        DebugLog("MotherControlWidth = " MotherControlWidth)
+        DebugLog("MotherControlHeight = " MotherControlHeight)
+
+        CenterX := (ScreenWidth - GuiWidth * 1.25) / 2
+        CenterY := (ScreenHeight - GuiHeight * 1.25) / 2
+
+        Xpos := (ScreenWidth - GuiWidth * 1.25) / 2
+        Ypos := (ScreenHeight - GuiHeight * 1.25) / 2 - 20
+
+        DebugLog("Xpos = " Xpos)
+        DebugLog("Ypos = " Ypos)
+
+        DebugLog("CenterX = " CenterX)
+        DebugLog("CenterY = " CenterY)
+
+
+        Finance.Show("x" CenterX "y" CenterY "w" GuiWidth "h" GuiHeight)
+        ; Finance.Show("x" Xpos "y" Xpos "w" GuiWidth "h" GuiHeight)
+        ; Finance.Show("x" CenterX "y" Xpos "w" GuiWidth "h" GuiHeight)
+
+
+        Finance["MotherControl"].Move(, , MotherControlWidth MotherControlHeight)
+
+    }
+    Else if (CurrentTab = "Withdraws") {
+        ScreenWidth := A_ScreenWidth
+        ScreenHeight := A_ScreenHeight
+
+        GuiWidth := 745
+        GuiHeight := 600
+
+        DebugLog("GuiWidth = " GuiWidth)
+        DebugLog("GuiHeight = " GuiHeight)
+
+        MotherControlWidth := GuiWidth - 20
+        MotherControlHeight := GuiHeight - 20
+
+        DebugLog("MotherControlWidth = " MotherControlWidth)
+        DebugLog("MotherControlHeight = " MotherControlHeight)
+
+        CenterX := (ScreenWidth - GuiWidth * 1.25) / 2
+        CenterY := (ScreenHeight - GuiHeight * 1.25) / 2
+
+        Xpos := (ScreenWidth - GuiWidth * 1.25) / 2
+        Ypos := (ScreenHeight - GuiHeight * 1.25) / 2.5
+
+        DebugLog("Xpos = " Xpos)
+        DebugLog("Ypos = " Ypos)
+
+        DebugLog("CenterX = " CenterX)
+        DebugLog("CenterY = " CenterY)
+
+
+        Finance.Show("x" CenterX "y" CenterY "w" GuiWidth "h" GuiHeight)
+        ; Finance.Show("x" Xpos "y" Xpos "w" GuiWidth "h" GuiHeight)
+
+        Finance["MotherControl"].Move(, , MotherControlWidth MotherControlHeight)
+    }
+    Else If (CurrentTab = "Finances") {
+        ScreenWidth := A_ScreenWidth
+        ScreenHeight := A_ScreenHeight
+
+        GuiWidth := 1120
+        GuiHeight := 600
+
+        DebugLog("GuiWidth = " GuiWidth)
+        DebugLog("GuiHeight = " GuiHeight)
+
+        MotherControlWidth := GuiWidth - 20
+        MotherControlHeight := GuiHeight - 20
+
+        DebugLog("MotherControlWidth = " MotherControlWidth)
+        DebugLog("MotherControlHeight = " MotherControlHeight)
+
+        CenterX := (ScreenWidth - GuiWidth * 1.25) / 2
+        CenterY := (ScreenHeight - GuiHeight * 1.25) / 2
+
+        Xpos := (ScreenWidth - GuiWidth * 1.25) / 2
+        Ypos := (ScreenHeight - GuiHeight * 1.25) / 2.5
+
+        DebugLog("Xpos = " Xpos)
+        DebugLog("Ypos = " Ypos)
+
+        DebugLog("CenterX = " CenterX)
+        DebugLog("CenterY = " CenterY)
+
+
+        Finance.Show("x" CenterX "y" CenterY "w" GuiWidth "h" GuiHeight)
+        ; Finance.Show("x" Xpos "y" Xpos "w" GuiWidth "h" GuiHeight)
+
+        Finance["MotherControl"].Move(, , MotherControlWidth MotherControlHeight)
+    }
+    Else If (CurrentTab = "Settings") {
+        ScreenWidth := A_ScreenWidth
+        ScreenHeight := A_ScreenHeight
+
+        GuiWidth := 740
+        GuiHeight := 210
+
+        DebugLog("GuiWidth = " GuiWidth)
+        DebugLog("GuiHeight = " GuiHeight)
+
+        MotherControlWidth := GuiWidth - 20
+        MotherControlHeight := GuiHeight - 20
+
+        DebugLog("MotherControlWidth = " MotherControlWidth)
+        DebugLog("MotherControlHeight = " MotherControlHeight)
+
+        CenterX := (ScreenWidth - GuiWidth * 1.25) / 2
+        CenterY := (ScreenHeight - GuiHeight * 1.25) / 2
+
+        Xpos := (ScreenWidth - GuiWidth * 1.25) / 2
+        Ypos := (ScreenHeight - GuiHeight * (1.25) / 2) - 20
+
+        DebugLog("Xpos = " Xpos)
+        DebugLog("Ypos = " Ypos)
+
+        DebugLog("CenterX = " CenterX)
+        DebugLog("CenterY = " CenterY)
+
+
+        Finance.Show("x" CenterX "y" CenterY "w" GuiWidth "h" GuiHeight)
+        ; Finance.Show("x" Xpos "y" Xpos "w" GuiWidth "h" GuiHeight)
+        ; Finance.Show("x" CenterX "y" Xpos "w" GuiWidth "h" GuiHeight)
+
+        Finance["MotherControl"].Move(, , MotherControlWidth MotherControlHeight)
+    }
+}
+
+; #EndRegion -- Tab Change --
+
+; #Region -- INVOICES --
+
+; #Region -- Import Invoices --
+
+ImportInvoices(*) {
+    Finance["Invoices"].Focus
+
+    ; ExtractFromExcel(Excel, FilePath, CellInvoice, CellDate, CellExcl, CellBTW, CellIncl) {
+    ;     Workbook := Excel.workbooks.Open(Filepath)
+    ;     Sheet := Workbook.Sheets(1)
+    ;     Data1 := Format("{:d}", Sheet.Range(CellInvoice).Value)
+    ;     Data2 := ConvertDate(Sheet.Range(CellDate).Value)
+    ;     Data3 := EnsureTwoDecimalPlaces(Sheet.Range(CellExcl).Value)
+    ;     Data4 := EnsureTwoDecimalPlaces(Sheet.Range(CellBTW).Value)
+    ;     Data5 := EnsureTwoDecimalPlaces(Sheet.Range(CellIncl).Value)
+    ;     Workbook.Close()
+    ;     Workbook := ""
+    ;     Sheet := ""
+    ;     DebugLog("Invoice Number: " . Data1 . "`n Date: " . Data2 . "`n Excl BTW: " . Data3 . "`n BTW: " . Data4 . "`n Incl BTW: " . Data5)
+    ;     return [Data1, Data2, Data3, Data4, Data5]
+    ; }
+
+    ; EnsureTwoDecimalPlaces(number) {
+    ;     return Format("{:0.2f}", StrReplace(number, ",", "."))
+    ; }
+
+    ; ConvertDate(Date) {
+    ;     if (InStr(Date, "/")) {
+    ;         ; DateArray := StrSplit(Date, "/", "/")
+    ;         ; return DateArray[2] "-" DateArray[1] "-" DateArray[3]
+    ;         return StrReplace(Date, "/", "-")
+    ;     }
+    ;     else if (InStr(Date, "-")) {
+    ;         return Date
+    ;     }
+    ;     else {
+    ;         MsgBox("Invalid Format: " Date)
+    ;     }
+    ; }
+    ; InvoiceDirectory := "G:\\My Drive\\Bakker Services\\Facturen\\"
+
+    ; Excel := ComObject("Excel.Application")
+
+    ; Loop Files, InvoiceDirectory "\*.xlsx", "R"
+    ; {
+    ;     if (SubStr(A_LoopFileName, 1, 1) == "~")
+    ;         continue
+
+    ;     ExtractedData := ExtractFromExcel(Excel, A_LoopFileFullPath, "C13", "C14", "F43", "F44", "F45")
+    ;     Finance["Invoices"].Add(, ExtractedData[1], ExtractedData[2], ExtractedData[3], ExtractedData[4], ExtractedData[5])
+    ; }
+
+    ; Excel.Quit()
+    db := sqlite("FinanceData.sqlite", "C:\Users\tijnb\Desktop\Programming\Autohotkey\Personal\MainData\sqlite3.dll")
+
+    select_statement := db.prepare("SELECT 'InvoiceID', 'InvoiceDate', 'Excl', 'BTW', 'Incl' FROM 'Invoices'")
+    rows := select_statement.all()
+    outputdebug rows
+
+    for row in rows
+        Finance["Invoices"].Add(, row.InvoiceID, row.InvoiceDate, row.Excl, row.BTW,)
+
+}
+
+; #EndRegion
+
+; #Region -- Total Profit --
+
+TotalProfits(*) {
+
+    Total1 := 0
+    Total2 := 0
+    Total3 := 0
+
+    Loop Finance["Invoices"].GetCount() {
+        New1 := Finance["Invoices"].GetText(A_Index, 3)
+        New2 := Finance["Invoices"].GetText(A_Index, 4)
+        New3 := Finance["Invoices"].GetText(A_Index, 5)
+
+        Total1 += New1, Total2 += New2, Total3 += New3
+
+    }
+
+    Total1 := Format("{:0.2f}", Total1)
+    Total2 := Format("{:0.2f}", Total2)
+    Total3 := Format("{:0.2f}", Total3)
+
+    Finance["ExclBTW"].Text := Total1
+    Finance["BTW"].Text := Total2
+    Finance["InclBTW"].Text := Total3
+
+}
+; #EndRegion -- Total Profit --
+
+ReloadInvoices(*) {
+    Finance["Invoices"].Delete()
+    ImportInvoices()
+}
+
+OpenInvoiceFolder(*) {
+    Run("G:\My Drive\Bakker Services\Facturen")
+}
+
+InvoiceDoubleClick(*) {
+    CurrentYear := FormatTime("yyyy", "yyyy")
+
+    InvoiceDirectory := "G:\\My Drive\\Bakker Services\\Facturen\\" . CurrentYear
+
+    SelectedRow := Finance["Invoices"].GetNext()
+    InvoiceID := Finance["Invoices"].GetText(SelectedRow, "1")
+    InvoiceDate := Finance["Invoices"].GetText(SelectedRow, "2")
+    DebugLog(InvoiceID " | " InvoiceDate)
+    Filename := "TringTring_" . InvoiceID . "_" . InvoiceDate . "_TijnBakker.xlsx"
+    DebugLog("Filename = " Filename)
+    Run InvoiceDirectory "\" . Filename
+}
+
+ReloadTotalProfits(*) {
+    Finance["ExclBTW"].Text := ""
+    Finance["BTW"].Text := ""
+    Finance["InclBTW"].Text := ""
+    TotalProfits()
+}
+
+BrowseImage(*) {
+    global SelectedImage := FileSelect("1", "G:\My Drive\Bakker Services\Uitbetaling fotos", "Image Browser")
+}
+
+
+GenerateInvoice(*) {
+
+    CurrentYear := FormatTime("yyyy", "yyyy")
+
+    SalaryNumber := Generate["Salary"].Value
+
+    OutputPath := "G:\\My Drive\\Bakker Services\\Facturen\\" . CurrentYear
+    ; OutputPath := "G:\\My Drive\\Bakker Services\\Facturen\\2024"
+
+    ; Define the path to the batch file
+    BatchFile := "C:\\Users\\tijnb\\Desktop\\Programming\\Autohotkey\\Personal\\Ozark_Finances\\V1\\Batch\\Generate.bat"
+
+    ; Run the batch file with the necessary arguments
+    quote(s) => Format('"{}"', s)
+    Run BatchFile . " " . quote(SalaryNumber) . " " . quote(SelectedImage) . " " . quote(OutputPath)
+
+    Generate.Destroy()
+
+    Finance["Invoices"].Delete()
+    ImportInvoices()
+
+    ; OutputDebug, python C:\\Users\\tijnb\\Desktop\\Programming\\Automation\\Personal\\MoneyReport\\arg-report.py --data "%InvoiceSalary%" --picture "%InvoiceImage%"
+    DebugLog("python C:\\Users\\tijnb\\Desktop\\Programming\\Automation\\Personal\\MoneyReport\\arg-report.py --data " . SalaryNumber . " --picture " . SelectedImage)
+    Return
+}
+
+MoveToBin(*) {
+    InvoiceDirectory := "G:\\My Drive\\Bakker Services\\Facturen\\2024"
+
+    SelectedRow := Finance["Invoices"].GetNext()
+    InvoiceID := Finance["Invoices"].GetText(SelectedRow, "1")
+    InvoiceDate := Finance["Invoices"].GetText(SelectedRow, "2")
+    DebugLog(InvoiceID " | " InvoiceDate)
+    Filename := "TringTring_" . InvoiceID . "_" . InvoiceDate . "_TijnBakker.xlsx"
+    DebugLog("Filename = " Filename)
+    Result := Msgbox("Are you sure you want to delete this invoice?", "Finance", "4")
+    If Result = "No"
+        return
+    FileMove(InvoiceDirectory "\" Filename, "C:\Users\tijnb\Desktop\Programming\Autohotkey\Personal\Ozark_Finances\V1\DeletedInvoices")
+    if (A_LastError) {
+        MsgBox("Could not delete invoice " . InvoiceID . " from date " . InvoiceDate . ".")
+    } else {
+        MsgBox("Invoice " . InvoiceID . " from date " . InvoiceDate . " deleted successfully.")
+        Finance["Invoices"].Delete(SelectedRow)
+        ReloadTotalProfits()
+    }
+}
+
+SelectJaarInvoices(*) {
+    SelectedJaar := Finance["JaarSelector"].Text
+    SelectedInvoices := FileSelect("M", "G:\My Drive\Bakker Services\Facturen\" . SelectedJaar, "Select Jaar Invoices")
+    for LoopedInvoices in SelectedInvoices
+    {
+        SplitPath(LoopedInvoices, &name)
+        ; msgbox name
+        SplitName := StrSplit(name, "_")
+        EditPaste(SplitName[2] " - " SplitName[3] "`r" "`n", Finance["SelectedInvoices"])
+    }
+}
+
+GenerateJaaroverzicht(*) {
+
+}
+
+; #EndRegion -- INVOICES --
+
+; #Region -- WITHDRAWS --
+
+; #Region -- Import Withdraws --
+
+ImportTransactions(*) {
+
+    Finance["Withdraws"].Focus()
+    Transactions := FileRead("C:\Users\tijnb\Desktop\Programming\Autohotkey\Personal\Ozark_Finances\V1\Output\transactions.txt")
+    loop parse Transactions, "`n"
+    {
+        If (A_LoopField != "") {
+            date := StrSplit(A_LoopField, "|")[1]
+            amount := StrSplit(A_LoopField, "|")[2]
+            description := StrSplit(A_LoopField, "|")[3]
+            Finance["Withdraws"].Add(, date, amount, description)
+            DebugLog("date = " date " | amount = " amount " | Description = " description "`n")
+        }
+    }
+}
+; #EndRegion -- Import Withdraws --
+
+; #Region -- Deposit --
+
+AppendDeposit(*) {
+    ; Finance["Withdraws"].Focus()
+    ; Finance["Withdraws"].Submit()
+    DepositAmount := DepositGui["DepositAmount"].Value
+    DepositDescription := DepositGui["DepositDescription"].Value
+    If (!RegExMatch(DepositAmount, "^[0-9\.]*$") || !RegExMatch(DepositDescription, "^[a-zA-Z]*$")) {
+        if (!RegExMatch(DepositAmount, "^[0-9\.]*$"))
+            MsgBox "You can only Enter Numbers and dots into the Amount box"
+    } Else If (DepositAmount != "") && (DepositDescription != "") {
+        FileAppend(A_DD "-" A_MM "-" A_YYYY " | " DepositAmount " | " DepositDescription "`n", "C:\Users\tijnb\Desktop\Programming\Autohotkey\Personal\Ozark_Finances\V1\Output\transactions.txt")
+        Finance["Withdraws"].Delete()
+        ImportTransactions()
+        DebugLog("DepositAmount = " DepositAmount "`n" "DepositDescription = " DepositDescription)
+    }
+
+}
+
+AppendWithdrawl(*) {
+    WithdrawAmount := WithdrawGui["WithdrawAmount"].Value
+    WithdrawDescription := WithdrawGui["WithdrawDescription"].Value
+    If (!RegExMatch(WithdrawAmount, "^[0-9\.]*$") || !RegExMatch(WithdrawDescription, "^[a-zA-Z]*$")) {
+        if (!RegExMatch(WithdrawAmount, "^[0-9\.]*$"))
+            MsgBox "You can only Enter Numbers and dots into the Amount box"
+    } Else If (WithdrawAmount != "") && (WithdrawDescription != "") {
+        FileAppend(A_DD "-" A_MM "-" A_YYYY " | -" WithdrawAmount " | " WithdrawDescription "`n", "C:\Users\tijnb\Desktop\Programming\Autohotkey\Personal\Ozark_Finances\V1\Output\transactions.txt")
+        Finance["Withdraws"].Delete()
+        ImportTransactions()
+        DebugLog("WithdrawAmount = " WithdrawAmount "`n" "WithdrawDescription = " WithdrawDescription)
+    }
+}
+
+; #EndRegion -- Deposit
+
+; #Region -- Withdraw --
+
+; Finance["Withdraws"].Focus()
+
+; #EndRegion -- Withdraw--
+
+; WithdrawGuiHandler(*) {
+;     WithdrawGui.Show("w780 h280")
+; }
+
+
+ReloadWithdraws(*) {
+    Finance["Withdraws"].Delete()
+    ImportTransactions()
+}
+
+OpenWithdraws(*) {
+
+}
+
+ClearWithdraws(*) {
+
+}
+
+; #EndRegion -- WITHDRAWS --
+
+OpenLogs(*) {
+    Run("C:\Users\tijnb\desktop\programming\autohotkey\personal\library\DebugLog")
+}
+
+ReloadScript(*) {
+    Reload
+}
+
+; #Region -- Settings --
+
+; #Region -- Show Settings Guis --
+
+ShowFinanceSettings(*) {
+}
+
+; #EndRegion
+
+LoadLogs(filepath, controlname) {
+    static prevTime := 0
+
+    currTime := 0
+    loop files, filepath "\*.txt"
+    {
+        fileTime := FileGetTime(A_LoopFileFullPath, "M")
+        if (filetime > currTime)
+        {
+            currTime := fileTime
+            currFile := A_LoopFileFullPath
+        }
+    }
+
+    if (currTime > prevTime) {
+        prevTime := currTime
+        LoadedLog := FileRead(currFile)
+        controlname.Value := LoadedLog
+    }
+}
+
+
+; #Endregion -- Settings --

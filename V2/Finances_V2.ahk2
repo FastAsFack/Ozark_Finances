@@ -1,0 +1,157 @@
+#Requires AutoHotkey v2.0
+#SingleInstance Force
+#Include C:\Users\tijnb\Desktop\Programming\Autohotkey\Personal\library\ImportantInclude.ahk2
+#Include Functions.ahk2
+#Include Finance_ExternalGuis.ahk2
+
+TraySetIcon("C:\Users\tijnb\pictures\Paintings\TBS.jpg")
+
+Finance := Gui()
+FinanceHWND := Finance.Hwnd
+SetWindowColor(FinanceHWND, RgbToBgr(0xFFFFFF), 0x2B2B2B, 0x2B2B2B)
+Finance.SetFont("s16", "Jetbrains Mono")
+Finance.BackColor := "2b2b2b"
+Finance.Color := "cWhite"
+
+Finance.Add("Tab3", "w1160 h680 cWhite Background2b2b2b vMotherControl 0x100 x10 y10 ", ["Invoices", "Withdraws", "Finances", "Settings"])
+
+Finance["MotherControl"].OnEvent("Change", OnTabChanges)
+
+Finance["MotherControl"].UseTab(1)
+
+Finance.SetFont("s16", "Jetbrains Mono")
+
+Finance.Add("Listview", "x15 y65 w724 h590 vInvoices grid Background2b2323 cWhite -HScroll", ["Invoice Number", "Invoice Date", "Excl BTW", "BTW", "Incl BTW"])
+Finance["Invoices"].SetDarkMode()
+Finance["Invoices"].OnEvent("Doubleclick", InvoiceDoubleClick)
+Finance.AddButton("x750 y65 w350 h50 vGenerateInvoice", "Generate Invoice")
+DoButtonStuff(Finance, "GenerateInvoice", "211a1a", GenerateInvoiceGUI)
+Finance.Add("Button", "x750 y+25 w350 h50 vGenerateAndSend", "Generate and send Invoice")
+Finance["GenerateAndSend"].SetBackColor("211a1a")
+Finance.Add("Button", "x750 y+25 w350 h50 vSendInvoice", "Send Invoice")
+Finance["SendInvoice"].SetBackColor("211a1a")
+Finance.Add("Button", "x750 y+25 w350 h50 vDeleteInvoice", "Delete Invoice")
+DoButtonStuff(Finance, "DeleteInvoice", "211a1a", MoveToBin)
+
+Finance.Add("Text", "x750 y+25 cWhite", "Total Excl BTW:")
+Finance.Add("Text", "x+15 y365 cWhite vExclBTW", "(none)")
+
+Finance.Add("Text", "x750 y+25 cWhite", "Total BTW:")
+Finance.Add("Text", "x+15 y417 cWhite vBTW", "(none)")
+
+Finance.Add("Text", "x750 y+25 cWhite", "Total Incl BTW:")
+Finance.Add("Text", "x+15 y470 cWhite vInclBTW", "(none)")
+
+Finance["Invoices"].ModifyCol("1", "195")
+Finance["Invoices"].ModifyCol("2", "175")
+Finance["Invoices"].ModifyCol("3", "117")
+Finance["Invoices"].ModifyCol("4", "115")
+Finance["Invoices"].ModifyCol("5", "117")
+
+Finance["MotherControl"].UseTab(2)
+
+Finance.Add("Listview", "x20 y65 w710 h343 vWithdraws grid Background2b2323 cWhite -HScroll ", ["Date", "Amount", "Description"])
+Finance["Withdraws"].SetDarkMode()
+
+Finance["Withdraws"].ModifyCol("1", "157")
+Finance["Withdraws"].ModifyCol("2", "150")
+Finance["Withdraws"].ModifyCol("3", "400")
+
+Finance.Add("Button", "x20 y445 w347 h50 vDepositButton", "Deposit")
+DoButtonStuff(Finance, "DepositButton", "211a1a", DepositGuiHandler)
+
+Finance.Add("Button", "x+10 y445 w347 h50 vWithdrawButton", "Withdraw")
+DoButtonStuff(Finance, "WithdrawButton", "211a1a", WithdrawGuiHandler)
+
+Finance.Add("Text", "x20 y510 cWhite", "Total Deposit:")
+Finance.Add("Text", "x+15 y510 cWhite", "(none)")
+Finance.Add("Text", "x20 y550 cWhite", "Total Withdraws:")
+Finance.Add("Text", "x+15 y550 cWhite", "(none)")
+
+Finance["MotherControl"].UseTab(3)
+
+Finance.Add("Listview", "x500 y80 w300 h150", ["Test"])
+
+Finance.Add("Groupbox", "x20 y65 w400 h490 cWhite", "Jaar Overzicht")
+
+Finance.Add("Text", "x50 y115 cWhite", "Jaar: ")
+
+; Finance.Add("Edit", "x135 y115 w260 h50 vJaar -VScroll Background211a1a cWhite")
+Finance.Add("DropDownList", "x135 y115 w260 h100 vJaarSelector cWhite Background211a1a", ["2024", "2025"])
+
+
+Finance.Add("Button", "x40 y190 w360 h50 vSelectInvoices cWhite", "Select Invoices")
+DoButtonStuff(Finance, "SelectInvoices", "211a1a", SelectJaarInvoices)
+
+Finance.SetFont("s14 cWhite", "Jetbrains Mono")
+Finance.Add("Edit", "x40 y260 w360 h200 vSelectedInvoices +ReadOnly Background211a1a")
+Finance.SetFont("s16 cWhite", "Jetbrains Mono")
+
+Finance.Add("Button", "x40 y480 w360 h50 vGenerateJaaroverzicht", "Generate Jaaroverzicht")
+DoButtonStuff(Finance, "GenerateJaaroverzicht", "211a1a", GenerateJaaroverzicht)
+
+Finance["MotherControl"].UseTab(4)
+
+Finance.Add("Button", "x10 y65 w350 h50 vInvoiceSettings", "Invoice Settings")
+DoButtonStuff(Finance, "InvoiceSettings", "211a1a", InvoiceSettingsGUI)
+
+Finance.Add("Button", "x+20 y65 w350 h50 vWithdrawSettings", "Withdraw Settings")
+DoButtonStuff(Finance, "WithdrawSettings", "211a1a", WithdrawSettingsGUI)
+
+Finance.Add("Button", "x10 y+25 w350 h50 vFinanceSettings", "Finance Settings")
+DoButtonStuff(Finance, "FinanceSettings", "211a1a", FinanceSettingsGUI)
+
+Finance.Add("Button", "x+20 y140 w350 h50 vGeneralSettings", "General Settings")
+DoButtonStuff(Finance, "GeneralSettings", "211a1a", GeneralSettingsGUI)
+
+; Finance.Add("GroupBox", "x20 y65 w400 h270 cWhite", "Invoices")
+; Finance.Add("Button", "x50 y105 w350 h50 vInvoiceReloader", "Reload Invoices")
+; Finance["InvoiceReloader"].SetBackColor("211a1a")
+; DoButtonStuff(Finance, "InvoiceReloader", "211a1a", ReloadInvoices)
+
+; Finance.Add("Button", "x50 y+25 w350 h50 vInvoiceDirOpen ", "Open Invoices Folder")
+; DoButtonStuff(Finance, "InvoiceDirOpen", "211a1a", OpenInvoiceFolder)
+
+; Finance.Add("Button", "x50 y+25 w350 h50 vTotalProfitsReload ", "Reload Total Profits")
+; DoButtonStuff(Finance, "TotalProfitsReload", "211a1a", ReloadTotalProfits)
+
+; Finance.Add("Groupbox", "x+100 y65 w400 h270 cWhite", "Withdraws")
+
+; Finance.Add("Button", "x525 y105 w350 h50 vWithdrawsReloader", "Reload Withdraws")
+; DoButtonStuff(Finance, "WithdrawsReloader", "211a1a", ReloadWithdraws)
+
+; Finance.Add("Button", "x525 y+25 w350 h50 vOpenWithdrawsFile", "Open Withdraws File")
+; DoButtonStuff(Finance, "OpenWithdrawsFile", "211a1a", OpenWithdraws)
+
+; Finance.Add("Button", "x525 y+25 w350 h50 vClearWithdraws", "Clear Withdraws")
+; DoButtonStuff(Finance, "ClearWithdraws", "211a1a", ClearWithdraws)
+
+; Finance.Add("Groupbox", "x20 y+50 w400 h270 cWhite", "General Settings")
+
+; Finance.Add("Button", "x50 y405 w350 h50 vOpenLogs", "Open Logs")
+; DoButtonStuff(Finance, "OpenLogs", "211a1a", LogWindowGUI)
+
+; Finance.Add("Button", "x50 y+25 w350 h50 vReloadScript", "Reload Script")
+; DoButtonStuff(Finance, "ReloadScript", "211a1a", ReloadScript)
+
+; Finance.Add("Button", "x50 y+25 w350 h50 vOpenWorkingDirectory", "Open Working Directory")
+; Finance["OpenWorkingDirectory"].SetBackColor("211a1a")
+
+; Finance.Add("Groupbox", "x+100 y355 w400 h270 cWhite", "Finances")
+
+; Finance.Add("Button", "x525 y405 w350 h50 vPlaceholder1", "{Placeholder}")
+; Finance["Placeholder1"].SetBackColor("211a1a")
+
+; Finance.Add("Button", "x525 y+25 w350 h50 vPlaceholder2", "{Placeholder}")
+; Finance["Placeholder2"].SetBackColor("211a1a")
+
+; Finance.Add("Button", "x525 y+25 w350 h50 vPlaceholder3", "{Placeholder}")
+; Finance["Placeholder3"].SetBackColor("211a1a")
+
+Finance.Show("w1120 h700")
+ImportTransactions()
+ImportInvoices()
+TotalProfits()
+^/:: {
+    Reload
+}

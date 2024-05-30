@@ -3,6 +3,7 @@ SendMode Input
 SetWorkingDir, %A_ScriptDir%
 ; #Include, C:\\Users\\tijnb\\Desktop\\Programming\\Autohotkey\\Personal\\Ozark_Finances\\V1\\Other Stuff\\eval.ahk
 #Include, C:\Users\tijnb\Desktop\Programming\Autohotkey\Personal\library\Debuglog\debug.ahk
+OnMessage(0x004A, "ReceiveMessage") ; 0x004A is WM_COPYDATA
 
 Gui, main:Show, w1200 h700 , Ozark Finances
 
@@ -104,6 +105,23 @@ Gui, main:Add, Button, x400 y+10 w300 h50 gOpenScriptFolder, Open Script Folder
 ; --- End Show GUI --- ;
 
 return
+
+ReceiveMessage(wParam, lParam)
+{
+    Data := StrGet(NumGet(lParam + (2 * A_PtrSize)))
+    if (Data = "Pause") {
+        Pause, Toggle, 1
+    }
+    else if (Data = "Suspend") {
+        Suspend, Toggle
+    }
+    else if (Data = "Reload") {
+        Reload
+    }
+    else if (Data = "ExitApp") {
+        ExitApp
+    }
+}
 
 ; #Region Variables --- ;
 

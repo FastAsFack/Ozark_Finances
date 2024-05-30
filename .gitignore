@@ -11,5 +11,6 @@ testing.ahk
 /V1/Output/*
 DiscordCopy
 Import.ahk
-/V2/*
+# /V2/*
+/V2/PyScript/virtualenv
 /V1/README.MD

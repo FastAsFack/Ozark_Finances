@@ -1,0 +1,176 @@
+#Requires AutoHotkey v2.0
+#SingleInstance Force
+#Include C:\Users\tijnb\Desktop\Programming\Autohotkey\Personal\library\ImportantInclude.ahk2
+#Include Functions.ahk2
+
+TraySetIcon("C:\Users\tijnb\pictures\Paintings\TBS.jpg")
+
+WithdrawGuiHandler(*) {
+    global WithdrawGui := Gui()
+
+    WithdrawGui.SetFont("s20", "Jetbrains Mono")
+    WithdrawGui.BackColor := "2b2b2b"
+    WithdrawGui.Color := "white"
+
+    WithdrawGui.Add("Text", "x290 y10 cWhite", "Withdraws")
+
+    WithdrawGui.SetFont("s16", "Jetbrains Mono")
+
+    WithdrawGui.Add("Edit", "x300 y60 w455 h50 vWithdrawAmount -VScroll")
+    WithdrawGui.Add("Edit", "x300 y+20 w455 h50 vWithdrawDescription -VScroll")
+
+    WithdrawGui.Add("Text", "x20 y70 cWhite", "Withdraw Amount")
+    WithdrawGui.Add("Text", "x20 y+40 cWhite", "Withdraw Description")
+
+    WithdrawGui.Add("Button", "x20 y205 w735 h50 vWithdraw", "Withdraw")
+    DoButtonStuff(WithdrawGui, "Withdraw", "211a1a", AppendWithdrawl)
+
+    WithdrawGui.Show("w780 h280")
+
+
+    SetWindowColor(WinExist("A"), 0x2B2B2B, 0x2B2B2B, 0x2B2B2B)
+}
+
+DepositGuiHandler(*) {
+    global DepositGui := Gui()
+
+    DepositGui.SetFont("s20", "Jetbrains Mono")
+    DepositGui.BackColor := "2b2b2b"
+    DepositGui.Color := "white"
+
+    DepositGui.Add("Text", "x290 y10 cWhite", "Deposits")
+
+    DepositGui.SetFont("s16", "Jetbrains Mono")
+
+    DepositGui.Add("Edit", "x300 y60 w455 h50 vDepositAmount -VScroll")
+    DepositGui.Add("Edit", "x300 y+20 w455 h50 vDepositDescription -VScroll")
+
+    DepositGui.Add("Text", "x20 y70 cWhite", "Deposit Amount")
+    DepositGui.Add("Text", "x20 y+40 cWhite", "Deposit Description")
+
+    DepositGui.Add("Button", "x20 y205 w735 h50 vEnterDeposit", "Deposit")
+
+    DepositGui["EnterDeposit"].OnEvent("Click", AppendDeposit)
+
+    DepositGui.Show("w780 h280")
+
+    SetWindowColor(WinExist("A"), 0x2B2B2B, 0x2B2B2B, 0x2B2B2B)
+}
+
+GenerateInvoiceGUI(*) {
+    global Generate := Gui()
+    Generate.Title := "Generate Invoice"
+
+    GenearteHWND := Generate.Hwnd
+    SetWindowColor(GenearteHWND, RgbToBgr(0x2B2B2B), 0x2B2B2B, 0x2B2B2B)
+
+    Generate.SetFont("s16", "Jetbrains Mono")
+    Generate.BackColor := "2b2b2b"
+    Generate.Color := "white"
+
+    Generate.Add("Text", "x20 y10 cwhite", "Invoice Salary:")
+    Generate.Add("Edit", "x20 y50 w300 h40 vSalary Background211a1a cWhite")
+    Generate.Add("Text", "x20 y100 cWhite", "Invoice Image Path:")
+    Generate.Add("Button", "x20 y140 w300 h40 vBrowseImage", "BrowseImage")
+    Generate["BrowseImage"].SetBackColor("211a1a")
+    Generate["BrowseImage"].OnEvent("Click", BrowseImage)
+    Generate.Add("Button", "x20 y200 w300 h40 vGenerateInvoice", "Generate Invoice")
+    Generate["GenerateInvoice"].SetBackColor("211a1a")
+    Generate["GenerateInvoice"].OnEvent("Click", GenerateInvoice)
+
+    Generate.Show("w350 h280")
+
+}
+
+LogWindowGUI(*) {
+    global LogWindow := Gui()
+
+    LogWindow.BackColor := "2b2b2b"
+    LogWindow.Color := "white"
+    LogWindow.SetFont("s16 cWhite", "Jetbrains Mono")
+    LogWindowHWND := LogWindow.Hwnd
+
+    LogWindow.Add("Tab", "x10 y10 w860 h460 Background2b2b2b vLogs", ["Invoices", "Transactions", "Finances"])
+    LogWindow["Logs"].UseTab(1)
+    LogWindow.Add("Edit", "w860 h425 x10 y45 Background211a1a vInvoiceLogs")
+    SetTimer((*) => LoadLogs("C:\Users\tijnb\Desktop\Programming\Autohotkey\Personal\library\Debuglog\Logs-v2\Finances_V2.ahk2", LogWindow["InvoiceLogs"]), 1000)
+    LogWindow["Logs"].UseTab(2)
+    LogWindow.Add("Edit", "w860 h425 x10 y45 Background211a1a vTransactionLogs")
+    SetTimer((*) => LoadLogs("C:\Users\tijnb\Desktop\Programming\Autohotkey\Personal\library\Debuglog\Logs-v2\Finances_V2.ahk2", LogWindow["TransactionLogs"]), 1000)
+    LogWindow["Logs"].UseTab(3)
+    LogWindow.Add("Edit", "w860 h425 x10 y45 Background211a1a vFinanceLogs")
+    SetTimer((*) => LoadLogs("C:\Users\tijnb\Desktop\Programming\Autohotkey\Personal\library\Debuglog\Logs-v2\Finances_V2.ahk2", LogWindow["FinanceLogs"]), 1000)
+    SetWindowColor(LogWindowHWND, RgbToBgr(0xFFFFFF), 0x2B2B2B, 0x2B2B2B)
+    LogWindow.Show("w880 h480")
+
+}
+
+InvoiceSettingsGUI(*) {
+    InvoiceSettings := Gui()
+    InvoiceSettings.Title := "Invoice Settings"
+    DefaultSettings("2b2b2b", "white", InvoiceSettings, "+Owner")
+
+    InvoiceSettings.Add("Button", "x15 y10 w350 h50 vInvoiceReloader", "Reload Invoices")
+    DoButtonStuff(InvoiceSettings, "InvoiceReloader", "211a1a", empty)
+    InvoiceSettings.Add("Button", "x15 y+15 w350 h50 vTotalProfitsReload", "Reload Total Profits")
+    DoButtonStuff(InvoiceSettings, "TotalProfitsReload", "211a1a", empty)
+    InvoiceSettings.Add("Button", "x15 y+15 w350 h50 vInvoiceDirOpen", "Open Invoice Folder")
+    DoButtonStuff(InvoiceSettings, "InvoiceDirOpen", "211a1a", empty)
+    InvoiceSettings.Add("Button", "x15 y+15 w350 h50 vOpenInvoiceLogs", "Show Invoice Logs")
+    DoButtonStuff(InvoiceSettings, "OpenInvoiceLogs", "211a1a", empty)
+
+    InvoiceSettings.Show("w380 h270")
+}
+
+WithdrawSettingsGUI(*) {
+    WithdrawSettings := Gui()
+    WithdrawSettings.Title := "Withdraw Settings"
+    DefaultSettings("2b2b2b", "white", WithdrawSettings, "+Owner")
+
+    WithdrawSettings.Add("Button", "x15 y10 w350 h50 vWithdrawsReloader", "Reload Withdraws")
+    DoButtonStuff(WithdrawSettings, "WithdrawsReloader", "211a1a", ReloadWithdraws)
+    WithdrawSettings.Add("Button", "x15 y+15 w350 h50 vOpenWithdrawsFile", "Open Withdraws File")
+    DoButtonStuff(WithdrawSettings, "OpenWithdrawsFile", "211a1a", OpenWithdraws)
+    WithdrawSettings.Add("Button", "x15 y+15 w350 h50 vClearWithdraws", "Clear Withdraws")
+    DoButtonStuff(WithdrawSettings, "ClearWithdraws", "211a1a", ClearWithdraws)
+    WithdrawSettings.Add("Button", "x15 y+15 w350 h50 vOpenWithdrawLogs", "Show Withdraw Logs")
+    DoButtonStuff(WithdrawSettings, "OpenWithdrawLogs", "211a1a", empty)
+
+    WithdrawSettings.Show("w380 h270")
+}
+
+FinanceSettingsGUI(*) {
+    FinanceSettings := Gui()
+    FinanceSettings.Title := "Finance Settings"
+    DefaultSettings("2b2b2b", "white", FinanceSettings, "+Owner")
+
+    FinanceSettings.Add("Button", "x15 y10 w350 h50 vPlaceholder1", "Placeholder1")
+    DoButtonStuff(FinanceSettings, "Placeholder1", "211a1a", empty)
+    FinanceSettings.Add("Button", "x15 y+15 w350 h50 vPlaceholder2", "Placeholder2")
+    DoButtonStuff(FinanceSettings, "Placeholder2", "211a1a", empty)
+    FinanceSettings.Add("Button", "x15 y+15 w350 h50 vPlaceholder3", "Placeholder3")
+    DoButtonStuff(FinanceSettings, "Placeholder3", "211a1a", empty)
+    FinanceSettings.Add("Button", "x15 y+15 w350 h50 vPlaceholder4", "Placeholder4")
+    DoButtonStuff(FinanceSettings, "Placeholder4", "211a1a", empty)
+
+    FinanceSettings.Show("w380 h270")
+}
+
+GeneralSettingsGUI(*) {
+    GeneralSettings := Gui()
+    GeneralSettings.Title := "General Settings"
+    DefaultSettings("2b2b2b", "white", GeneralSettings, "+Owner")
+
+    GeneralSettings.Add("Button", "x15 y10 w350 h50 vInvoiceReloader", "Reload Invoices")
+    DoButtonStuff(GeneralSettings, "InvoiceReloader", "211a1a", empty)
+    GeneralSettings.Add("Button", "x15 y+15 w350 h50 vTotalProfitsReload", "Reload Total Profits")
+    DoButtonStuff(GeneralSettings, "TotalProfitsReload", "211a1a", empty)
+    GeneralSettings.Add("Button", "x15 y+15 w350 h50 vInvoiceDirOpen", "Open Invoice Folder")
+    DoButtonStuff(GeneralSettings, "InvoiceDirOpen", "211a1a", empty)
+    GeneralSettings.Add("Button", "x15 y+15 w350 h50 vOpenInvoiceLogs", "Show Invoice Logs")
+    DoButtonStuff(GeneralSettings, "OpenInvoiceLogs", "211a1a", empty)
+
+    GeneralSettings.Show("w380 h270")
+}
+
+RgbToBgr(color) => ((Color >> 16) & 0xFF) | (Color & 0x00FF00) | ((Color & 0xFF) << 16)

@@ -1,0 +1,15 @@
+#Requires AutoHotkey v2.1-alpha.10
+#SingleInstance Force
+
+#Include DarkListView.ahk2
+
+myGui := Gui(, "My ListView"), myGui.BackColor := 0x202020
+
+myGui.SetFont("S16", "Jetbrains Mono")
+
+lv := myGui.AddListView("Count100 Grid R10 W400 cWhite Background" myGui.BackColor, ["Select", "Number", "Description"])
+lv.SetDarkMode()
+
+myGui.Show("w500 h500")
+
+lv.Add(, "Test", "test", "test123")
