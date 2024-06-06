@@ -2,8 +2,7 @@
 #SingleInstance Force
 #Include Finance_ExternalGuis.ahk2
 #Include C:\Users\tijnb\Desktop\Programming\Autohotkey\Personal\library\ImportantInclude.ahk2
-#Include C:\Users\tijnb\Desktop\Programming\Autohotkey\Personal\MainData\sqlite.ahk2
-
+#Include C:\Users\tijnb\Desktop\Programming\Autohotkey\Personal\MainData\sqlite_error.ahk2
 ; #Region -- Tab Change --
 
 OnTabChanges(*) {
@@ -14,6 +13,8 @@ OnTabChanges(*) {
 
         GuiWidth := 1120
         GuiHeight := 700
+
+        DebugLog("--- Switched to Invoice Tab ---")
 
         DebugLog("GuiWidth = " GuiWidth)
         DebugLog("GuiHeight = " GuiHeight)
@@ -50,7 +51,9 @@ OnTabChanges(*) {
         ScreenHeight := A_ScreenHeight
 
         GuiWidth := 745
-        GuiHeight := 600
+        GuiHeight := 700
+
+        DebugLog("-- Switched to Withdraws -- ")
 
         DebugLog("GuiWidth = " GuiWidth)
         DebugLog("GuiHeight = " GuiHeight)
@@ -86,6 +89,8 @@ OnTabChanges(*) {
         GuiWidth := 1120
         GuiHeight := 600
 
+        DebugLog("-- Switched to Finances --")
+
         DebugLog("GuiWidth = " GuiWidth)
         DebugLog("GuiHeight = " GuiHeight)
 
@@ -117,8 +122,10 @@ OnTabChanges(*) {
         ScreenWidth := A_ScreenWidth
         ScreenHeight := A_ScreenHeight
 
-        GuiWidth := 740
+        GuiWidth := 540
         GuiHeight := 210
+
+        DebugLog("-- Switched to Settings --")
 
         DebugLog("GuiWidth = " GuiWidth)
         DebugLog("GuiHeight = " GuiHeight)
@@ -157,65 +164,84 @@ OnTabChanges(*) {
 ; #Region -- Import Invoices --
 
 ImportInvoices(*) {
+
     Finance["Invoices"].Focus
 
-    ; ExtractFromExcel(Excel, FilePath, CellInvoice, CellDate, CellExcl, CellBTW, CellIncl) {
-    ;     Workbook := Excel.workbooks.Open(Filepath)
-    ;     Sheet := Workbook.Sheets(1)
-    ;     Data1 := Format("{:d}", Sheet.Range(CellInvoice).Value)
-    ;     Data2 := ConvertDate(Sheet.Range(CellDate).Value)
-    ;     Data3 := EnsureTwoDecimalPlaces(Sheet.Range(CellExcl).Value)
-    ;     Data4 := EnsureTwoDecimalPlaces(Sheet.Range(CellBTW).Value)
-    ;     Data5 := EnsureTwoDecimalPlaces(Sheet.Range(CellIncl).Value)
-    ;     Workbook.Close()
-    ;     Workbook := ""
-    ;     Sheet := ""
-    ;     DebugLog("Invoice Number: " . Data1 . "`n Date: " . Data2 . "`n Excl BTW: " . Data3 . "`n BTW: " . Data4 . "`n Incl BTW: " . Data5)
-    ;     return [Data1, Data2, Data3, Data4, Data5]
-    ; }
+    db := sqlite("C:\Users\tijnb\Desktop\Programming\Autohotkey\Personal\MainData\FinanceData.sqlite", "C:\Users\tijnb\Desktop\Programming\Autohotkey\Personal\MainData\sqlite3.dll")
 
-    ; EnsureTwoDecimalPlaces(number) {
-    ;     return Format("{:0.2f}", StrReplace(number, ",", "."))
-    ; }
-
-    ; ConvertDate(Date) {
-    ;     if (InStr(Date, "/")) {
-    ;         ; DateArray := StrSplit(Date, "/", "/")
-    ;         ; return DateArray[2] "-" DateArray[1] "-" DateArray[3]
-    ;         return StrReplace(Date, "/", "-")
-    ;     }
-    ;     else if (InStr(Date, "-")) {
-    ;         return Date
-    ;     }
-    ;     else {
-    ;         MsgBox("Invalid Format: " Date)
-    ;     }
-    ; }
-    ; InvoiceDirectory := "G:\\My Drive\\Bakker Services\\Facturen\\"
-
-    ; Excel := ComObject("Excel.Application")
-
-    ; Loop Files, InvoiceDirectory "\*.xlsx", "R"
-    ; {
-    ;     if (SubStr(A_LoopFileName, 1, 1) == "~")
-    ;         continue
-
-    ;     ExtractedData := ExtractFromExcel(Excel, A_LoopFileFullPath, "C13", "C14", "F43", "F44", "F45")
-    ;     Finance["Invoices"].Add(, ExtractedData[1], ExtractedData[2], ExtractedData[3], ExtractedData[4], ExtractedData[5])
-    ; }
-
-    ; Excel.Quit()
-    db := sqlite("FinanceData.sqlite", "C:\Users\tijnb\Desktop\Programming\Autohotkey\Personal\MainData\sqlite3.dll")
-
-    select_statement := db.prepare("SELECT 'InvoiceID', 'InvoiceDate', 'Excl', 'BTW', 'Incl' FROM 'Invoices'")
+    select_statement := db.prepare("SELECT InvoiceID, InvoiceDate, Excl, BTW, Incl FROM Invoices")
     rows := select_statement.all()
-    outputdebug rows
 
     for row in rows
-        Finance["Invoices"].Add(, row.InvoiceID, row.InvoiceDate, row.Excl, row.BTW,)
-
+    {
+        roundedExcl := Round(row.Excl, 2)
+        roundedBTW := Round(row.BTW, 2)
+        roundedIncl := Round(row.Incl, 2)
+        Finance["Invoices"].Add(, row.InvoiceID, row.InvoiceDate, roundedExcl, roundedBTW, roundedIncl)
+        DebugLog(" --- " "`n" "InvoiceID : " row.InvoiceID "`n" "Invoice Date : " row.InvoiceDate "`n" "Excl BTW : " roundedExcl "`n" "BTW : " roundedBTW "`n" "Incl BTW : " roundedIncl)
+    }
 }
 
+; #EndRegion
+
+; #Region -- Scan for Invoices --
+
+ScanInvoices(*) {
+
+    ExtractFromExcel(Excel, FilePath, CellInvoice, CellDate, CellExcl, CellBTW, CellIncl) {
+        Workbook := Excel.workbooks.Open(Filepath)
+        Sheet := Workbook.Sheets(1)
+        Data1 := Format("{:d}", Sheet.Range(CellInvoice).Value)
+        Data2 := ConvertDate(Sheet.Range(CellDate).Value)
+        Data3 := EnsureTwoDecimalPlaces(Sheet.Range(CellExcl).Value)
+        Data4 := EnsureTwoDecimalPlaces(Sheet.Range(CellBTW).Value)
+        Data5 := EnsureTwoDecimalPlaces(Sheet.Range(CellIncl).Value)
+        Workbook.Close()
+        Workbook := ""
+        Sheet := ""
+        DebugLog("Invoice Number: " . Data1 . "`n Date: " . Data2 . "`n Excl BTW: " . Data3 . "`n BTW: " . Data4 . "`n Incl BTW: " . Data5)
+        return [Data1, Data2, Data3, Data4, Data5]
+    }
+
+    EnsureTwoDecimalPlaces(number) {
+        return Format("{:0.2f}", StrReplace(number, ",", "."))
+    }
+
+    ConvertDate(Date) {
+        if (InStr(Date, "/")) {
+            return StrReplace(Date, "/", "-")
+        }
+        else if (InStr(Date, "-")) {
+            return Date
+        }
+        else {
+            MsgBox("Invalid Format: " Date)
+        }
+    }
+    Excel := ComObject("Excel.Application")
+
+    CurrentYear := FormatTime("yyyy", "yyyy")
+
+    InvoiceDirectory := "G:\\My Drive\\Bakker Services\\Facturen\\" . CurrentYear
+    DebugLog("Invoice Directory = " InvoiceDirectory)
+
+    db := sqlite("C:\Users\tijnb\Desktop\Programming\Autohotkey\Personal\MainData\FinanceData.sqlite", "C:\Users\tijnb\Desktop\Programming\Autohotkey\Personal\MainData\sqlite3.dll")
+
+    selectStatement := db.prepare("select InvoiceID from Invoices where InvoiceID=?")
+    insertStatement := db.prepare("INSERT INTO Invoices (InvoiceID, InvoiceDate, Excl, BTW, Incl) VALUES(?,?,?,?,?)")
+    Loop Files, InvoiceDirectory "\*.xlsx", "R"
+    {
+        if (SubStr(A_LoopFileName, 1, 1) == "~")
+            continue
+
+        ExtractedData := ExtractFromExcel(Excel, A_LoopFileFullPath, "C13", "C14", "F43", "F44", "F45")
+
+        if (!selectStatement.all(ExtractedData[1]).Length) {
+            insertStatement.all(ExtractedData[1], ExtractedData[2], ExtractedData[3], ExtractedData[4], ExtractedData[5])
+        }
+    }
+    Excel.Quit()
+}
 ; #EndRegion
 
 ; #Region -- Total Profit --
@@ -247,11 +273,14 @@ TotalProfits(*) {
 ; #EndRegion -- Total Profit --
 
 ReloadInvoices(*) {
+    DebugLog("Started Reload Invoice...")
     Finance["Invoices"].Delete()
     ImportInvoices()
+    DebugLog("Reload Invoices Succesfull.")
 }
 
 OpenInvoiceFolder(*) {
+    DebugLog("Hello from invoice open folder", "ReloadInvoices")
     Run("G:\My Drive\Bakker Services\Facturen")
 }
 
@@ -342,7 +371,37 @@ SelectJaarInvoices(*) {
 }
 
 GenerateJaaroverzicht(*) {
+    SelectJaarInvoices()
+}
 
+; db := sqlite("C:\Users\tijnb\Desktop\Programming\Autohotkey\Personal\MainData\FinanceData.sqlite", "C:\Users\tijnb\Desktop\Programming\Autohotkey\Personal\MainData\sqlite3.dll")
+
+; select_statement := db.prepare("SELECT InvoiceID, InvoiceDate, Excl, BTW, Incl FROM Invoices")
+; rows := select_statement.all()
+
+; for row in rows
+; {
+;     roundedExcl := Round(row.Excl, 2)
+;     roundedBTW := Round(row.BTW, 2)
+;     roundedIncl := Round(row.Incl, 2)
+;     Finance["Invoices"].Add(, row.InvoiceID, row.InvoiceDate, roundedExcl, roundedBTW, roundedIncl)
+;     DebugLog(" --- " "`n" "InvoiceID : " row.InvoiceID "`n" "Invoice Date : " row.InvoiceDate "`n" "Excl BTW : " roundedExcl "`n" "BTW : " roundedBTW "`n" "Incl BTW : " roundedIncl)
+; }
+
+GetInvoiceData(InvoiceID) {
+    db := sqlite("C:\Users\tijnb\Desktop\Programming\Autohotkey\Personal\MainData\FinanceData.sqlite", "C:\Users\tijnb\Desktop\Programming\Autohotkey\Personal\MainData\sqlite3.dll")
+    select_id := db.prepare("SELECT InvoiceID FROM Invoices")
+    rows := select_id.all()
+
+    for row in rows
+    {
+        msgbox row.InvoiceID
+    }
+
+}
+
+ChangeInvoiceNumber(*) {
+    ChangeInvoiceGUI()
 }
 
 ; #EndRegion -- INVOICES --
@@ -354,16 +413,15 @@ GenerateJaaroverzicht(*) {
 ImportTransactions(*) {
 
     Finance["Withdraws"].Focus()
-    Transactions := FileRead("C:\Users\tijnb\Desktop\Programming\Autohotkey\Personal\Ozark_Finances\V1\Output\transactions.txt")
-    loop parse Transactions, "`n"
+    db := sqlite("C:\Users\tijnb\Desktop\Programming\Autohotkey\Personal\MainData\FinanceData.sqlite", "C:\Users\tijnb\Desktop\Programming\Autohotkey\Personal\MainData\sqlite3.dll")
+
+    select_statement := db.prepare("SELECT Date, Amount, Description FROM Transactions")
+    rows := select_statement.all()
+
+    for row in rows
     {
-        If (A_LoopField != "") {
-            date := StrSplit(A_LoopField, "|")[1]
-            amount := StrSplit(A_LoopField, "|")[2]
-            description := StrSplit(A_LoopField, "|")[3]
-            Finance["Withdraws"].Add(, date, amount, description)
-            DebugLog("date = " date " | amount = " amount " | Description = " description "`n")
-        }
+        Amount := Round(row.Amount, 2)
+        Finance["Withdraws"].Add(, row.Date, Amount, row.Description)
     }
 }
 ; #EndRegion -- Import Withdraws --
@@ -371,33 +429,39 @@ ImportTransactions(*) {
 ; #Region -- Deposit --
 
 AppendDeposit(*) {
-    ; Finance["Withdraws"].Focus()
-    ; Finance["Withdraws"].Submit()
+    db := sqlite("C:\Users\tijnb\Desktop\Programming\Autohotkey\Personal\MainData\FinanceData.sqlite", "C:\Users\tijnb\Desktop\Programming\Autohotkey\Personal\MainData\sqlite3.dll")
     DepositAmount := DepositGui["DepositAmount"].Value
     DepositDescription := DepositGui["DepositDescription"].Value
     If (!RegExMatch(DepositAmount, "^[0-9\.]*$") || !RegExMatch(DepositDescription, "^[a-zA-Z]*$")) {
         if (!RegExMatch(DepositAmount, "^[0-9\.]*$"))
             MsgBox "You can only Enter Numbers and dots into the Amount box"
     } Else If (DepositAmount != "") && (DepositDescription != "") {
-        FileAppend(A_DD "-" A_MM "-" A_YYYY " | " DepositAmount " | " DepositDescription "`n", "C:\Users\tijnb\Desktop\Programming\Autohotkey\Personal\Ozark_Finances\V1\Output\transactions.txt")
+        CurrentDate := A_DD "-" A_MM "-" A_YYYY
+        insertStatement := db.prepare("INSERT INTO Transactions (Date, Amount, Description) VALUES(?,?,?)")
+        insertStatement.all(CurrentDate, DepositAmount, DepositDescription)
         Finance["Withdraws"].Delete()
         ImportTransactions()
         DebugLog("DepositAmount = " DepositAmount "`n" "DepositDescription = " DepositDescription)
+        DepositGui.Destroy()
     }
 
 }
 
 AppendWithdrawl(*) {
+    db := sqlite("C:\Users\tijnb\Desktop\Programming\Autohotkey\Personal\MainData\FinanceData.sqlite", "C:\Users\tijnb\Desktop\Programming\Autohotkey\Personal\MainData\sqlite3.dll")
     WithdrawAmount := WithdrawGui["WithdrawAmount"].Value
     WithdrawDescription := WithdrawGui["WithdrawDescription"].Value
     If (!RegExMatch(WithdrawAmount, "^[0-9\.]*$") || !RegExMatch(WithdrawDescription, "^[a-zA-Z]*$")) {
         if (!RegExMatch(WithdrawAmount, "^[0-9\.]*$"))
             MsgBox "You can only Enter Numbers and dots into the Amount box"
     } Else If (WithdrawAmount != "") && (WithdrawDescription != "") {
-        FileAppend(A_DD "-" A_MM "-" A_YYYY " | -" WithdrawAmount " | " WithdrawDescription "`n", "C:\Users\tijnb\Desktop\Programming\Autohotkey\Personal\Ozark_Finances\V1\Output\transactions.txt")
+        CurrentDate := A_DD "-" A_MM "-" A_YYYY
+        insertStatement := db.prepare("INSERT INTO Transactions (Date, Amount, Description) VALUES(?,?,?)")
+        insertStatement.all(CurrentDate, "-" WithdrawAmount, WithdrawDescription)
         Finance["Withdraws"].Delete()
         ImportTransactions()
         DebugLog("WithdrawAmount = " WithdrawAmount "`n" "WithdrawDescription = " WithdrawDescription)
+        WithdrawGui.Destroy()
     }
 }
 
@@ -415,16 +479,18 @@ AppendWithdrawl(*) {
 
 
 ReloadWithdraws(*) {
+    WinActivate("ahk_id" FinanceHWND)
     Finance["Withdraws"].Delete()
     ImportTransactions()
 }
 
 OpenWithdraws(*) {
-
+    Run("C:\Users\tijnb\Desktop\Programming\Autohotkey\Personal\Ozark_Finances\V2\FinanceData.sqlite")
 }
 
 ClearWithdraws(*) {
-
+    Finance["Withdraws"].Focus()
+    Finance["Withdraws"].Delete()
 }
 
 ; #EndRegion -- WITHDRAWS --
@@ -467,5 +533,12 @@ LoadLogs(filepath, controlname) {
     }
 }
 
-
 ; #Endregion -- Settings --
+
+ExitGui(*) {
+    ExitApp
+}
+
+ActivateTab(tabname) {
+    Finance[tabname].Choose
+}

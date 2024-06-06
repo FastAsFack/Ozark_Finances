@@ -106,26 +106,41 @@ LogWindowGUI(*) {
 }
 
 InvoiceSettingsGUI(*) {
-    InvoiceSettings := Gui()
+    if IsSet(InvoiceSettings) {
+        InvoiceSettings.Show()
+        return
+    }
+    global InvoiceSettings := Gui()
+    InvoiceHWND := InvoiceSettings.Hwnd
     InvoiceSettings.Title := "Invoice Settings"
-    DefaultSettings("2b2b2b", "white", InvoiceSettings, "+Owner")
+    DefaultSettings("2b2b2b", "white", InvoiceSettings, "")
 
     InvoiceSettings.Add("Button", "x15 y10 w350 h50 vInvoiceReloader", "Reload Invoices")
-    DoButtonStuff(InvoiceSettings, "InvoiceReloader", "211a1a", empty)
+    DoButtonStuff(InvoiceSettings, "InvoiceReloader", "211a1a", ReloadInvoices)
     InvoiceSettings.Add("Button", "x15 y+15 w350 h50 vTotalProfitsReload", "Reload Total Profits")
-    DoButtonStuff(InvoiceSettings, "TotalProfitsReload", "211a1a", empty)
+    DoButtonStuff(InvoiceSettings, "TotalProfitsReload", "211a1a", ReloadTotalProfits)
     InvoiceSettings.Add("Button", "x15 y+15 w350 h50 vInvoiceDirOpen", "Open Invoice Folder")
-    DoButtonStuff(InvoiceSettings, "InvoiceDirOpen", "211a1a", empty)
+    DoButtonStuff(InvoiceSettings, "InvoiceDirOpen", "211a1a", OpenInvoiceFolder)
+    InvoiceSettings.Add("Button", "x15 y+15 w350 h50 vScanNewInvoices", "Scan for New Invoices")
+    DoButtonStuff(InvoiceSettings, "ScanNewInvoices", "211a1a", ScanInvoices)
+    InvoiceSettings.Add("Button", "x15 y+15 w350 h50 vInvoiceNumber", "Change Next invoice Number")
+    DoButtonStuff(InvoiceSettings, "InvoiceNumber", "211a1a", ChangeInvoiceNumber)
     InvoiceSettings.Add("Button", "x15 y+15 w350 h50 vOpenInvoiceLogs", "Show Invoice Logs")
     DoButtonStuff(InvoiceSettings, "OpenInvoiceLogs", "211a1a", empty)
 
-    InvoiceSettings.Show("w380 h270")
+    InvoiceSettings.Show("w380")
+    ; InvoiceSettings.Show("w380 h400")
 }
 
 WithdrawSettingsGUI(*) {
-    WithdrawSettings := Gui()
+    if IsSet(WithdrawSettings) {
+        WithdrawSettings.Show()
+        return
+    }
+    global WithdrawSettings := Gui()
+    WithdrawHWND := WithdrawSettings.Hwnd
     WithdrawSettings.Title := "Withdraw Settings"
-    DefaultSettings("2b2b2b", "white", WithdrawSettings, "+Owner")
+    DefaultSettings("2b2b2b", "white", WithdrawSettings, "")
 
     WithdrawSettings.Add("Button", "x15 y10 w350 h50 vWithdrawsReloader", "Reload Withdraws")
     DoButtonStuff(WithdrawSettings, "WithdrawsReloader", "211a1a", ReloadWithdraws)
@@ -136,13 +151,18 @@ WithdrawSettingsGUI(*) {
     WithdrawSettings.Add("Button", "x15 y+15 w350 h50 vOpenWithdrawLogs", "Show Withdraw Logs")
     DoButtonStuff(WithdrawSettings, "OpenWithdrawLogs", "211a1a", empty)
 
-    WithdrawSettings.Show("w380 h270")
+    WithdrawSettings.Show("w380")
 }
 
 FinanceSettingsGUI(*) {
-    FinanceSettings := Gui()
+    if IsSet(FinanceSettings) {
+        FinanceSettings.Show()
+        return
+    }
+    global FinanceSettings := Gui()
+    FinanceHWND := FinanceSettings.Hwnd
     FinanceSettings.Title := "Finance Settings"
-    DefaultSettings("2b2b2b", "white", FinanceSettings, "+Owner")
+    DefaultSettings("2b2b2b", "white", FinanceSettings, "")
 
     FinanceSettings.Add("Button", "x15 y10 w350 h50 vPlaceholder1", "Placeholder1")
     DoButtonStuff(FinanceSettings, "Placeholder1", "211a1a", empty)
@@ -153,24 +173,50 @@ FinanceSettingsGUI(*) {
     FinanceSettings.Add("Button", "x15 y+15 w350 h50 vPlaceholder4", "Placeholder4")
     DoButtonStuff(FinanceSettings, "Placeholder4", "211a1a", empty)
 
-    FinanceSettings.Show("w380 h270")
+    FinanceSettings.Show("w380")
 }
 
 GeneralSettingsGUI(*) {
-    GeneralSettings := Gui()
+    if IsSet(GeneralSettings) {
+        GeneralSettings.Show()
+        return
+    }
+    global GeneralSettings := Gui()
     GeneralSettings.Title := "General Settings"
-    DefaultSettings("2b2b2b", "white", GeneralSettings, "+Owner")
+    DefaultSettings("2b2b2b", "white", GeneralSettings, "")
 
-    GeneralSettings.Add("Button", "x15 y10 w350 h50 vInvoiceReloader", "Reload Invoices")
-    DoButtonStuff(GeneralSettings, "InvoiceReloader", "211a1a", empty)
+    GeneralSettings.Add("Button", "x15 y10 w350 h50 vShowLogs", "Show all Logs")
+    DoButtonStuff(GeneralSettings, "ShowLogs", "211a1a", LogWindowGUI)
     GeneralSettings.Add("Button", "x15 y+15 w350 h50 vTotalProfitsReload", "Reload Total Profits")
     DoButtonStuff(GeneralSettings, "TotalProfitsReload", "211a1a", empty)
-    GeneralSettings.Add("Button", "x15 y+15 w350 h50 vInvoiceDirOpen", "Open Invoice Folder")
-    DoButtonStuff(GeneralSettings, "InvoiceDirOpen", "211a1a", empty)
+    GeneralSettings.Add("Button", "x15 y+15 w350 h50 vWithdrawLogs", "Show Withdraw Logs")
+    DoButtonStuff(GeneralSettings, "WithdrawLogs", "211a1a", empty)
     GeneralSettings.Add("Button", "x15 y+15 w350 h50 vOpenInvoiceLogs", "Show Invoice Logs")
     DoButtonStuff(GeneralSettings, "OpenInvoiceLogs", "211a1a", empty)
 
-    GeneralSettings.Show("w380 h270")
+    GeneralSettings.Show("w380")
 }
 
+
 RgbToBgr(color) => ((Color >> 16) & 0xFF) | (Color & 0x00FF00) | ((Color & 0xFF) << 16)
+
+ChangeInvoiceGUI(*) {
+    Number := Gui()
+    NumberHWND := Number.Hwnd
+    Number.Title := "Change Invoice Number"
+    DefaultSettings("2b2b2b", "cWhite", Number)
+    Number.Add("Edit", "x10 y10 w150 h50 vNumberValue -VScroll Background2b2b2b")
+    SetFont(Number, "Jetbrains Mono", "s12", "cWhite")
+    Number.Add("Button", "x10 y+15 w150 h50 vSubmitButton", "Submit Changes")
+    DoButtonStuff(Number, "SubmitButton", "211a1a", SubmitNewNumber)
+    Number.Show("w180 x100")
+
+    SubmitNewNumber(*) {
+        Submit := Number["NumberValue"].Value
+        Submit := Format("{:04}", Submit)
+        LastInvoiceFilepath := "C:\Users\tijnb\Desktop\Programming\Automation\Personal\MoneyReport\last_invoice_number.txt"
+        FileDelete(LastInvoiceFilepath)
+        FileAppend(Submit, LastInvoiceFilepath)
+        Number.Destroy()
+    }
+}
