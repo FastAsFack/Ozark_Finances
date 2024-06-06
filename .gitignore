@@ -14,3 +14,7 @@ Import.ahk
 # /V2/*
 /V2/PyScript/virtualenv
 /V1/README.MD
+/V2/test.ahk2
+/V2/settingsOnly.ahk2
+/V2/FinanceData.sqlite
+/V2/Reference Pictures/*
