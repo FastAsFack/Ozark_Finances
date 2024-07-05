@@ -7,13 +7,13 @@
 TraySetIcon("C:\Users\tijnb\pictures\Paintings\TBS.jpg")
 
 Finance := Gui()
+Finance.SetWindowColor(, "2b2b2b")
 global FinanceHWND := Finance.Hwnd
-SetWindowColor(FinanceHWND, RgbToBgr(0xFFFFFF), 0x2B2B2B, 0x2B2B2B)
 Finance.SetFont("s16", "Jetbrains Mono")
 Finance.BackColor := "2b2b2b"
 Finance.Color := "cWhite"
 
-Finance.Add("Tab3", "w1100 h680 cWhite Background2b2b2b vMotherControl 0x100 x10 y10 ", ["Invoices", "Withdraws", "Finances", "Settings"])
+Finance.Add("Tab3", "w1100 h680 cWhite Background2b2b2b vMotherControl 0x100 x10 y10 ", ["Invoices", "Withdraws", "Notes", "Important Info", "Settings"])
 
 Finance["MotherControl"].OnEvent("Change", OnTabChanges)
 
@@ -53,13 +53,20 @@ Finance["Invoices"].ModifyCol("5", "117")
 
 Finance["MotherControl"].UseTab(2)
 
-Finance.Add("Listview", "x20 y65 w710 h463 vWithdraws grid 0x2000 Background2b2323 cWhite", ["Date", "Amount", "Description"])
+Finance.Add("Listview", "x20 y65 w505 h463 vWithdraws grid 0x2000 Background2b2323 cWhite", ["Date", "Withdrawn", "Description"])
+Finance.Add("Listview", "x+10 y65 w505 h463 vDeposits grid 0x2000 Background2b2323 cWhite", ["Date", "Deposited", "Description"])
 WithdrawHWND := Finance["Withdraws"].Hwnd
+DepositHWND := Finance["Deposits"].Hwnd
 Finance["Withdraws"].SetDarkMode()
+Finance["Deposits"].SetDarkMode()
 
 Finance["Withdraws"].ModifyCol("1", "157")
 Finance["Withdraws"].ModifyCol("2", "150")
 Finance["Withdraws"].ModifyCol("3", "400")
+
+Finance["Deposits"].ModifyCol("1", "157")
+Finance["Deposits"].ModifyCol("2", "150")
+Finance["Deposits"].ModifyCol("3", "400")
 
 Finance.Add("Button", "x20 y545 w347 h50 vDepositButton", "Deposit")
 DoButtonStuff(Finance, "DepositButton", "211a1a", DepositGuiHandler)
@@ -74,27 +81,37 @@ Finance.Add("Text", "x+15 y650 cWhite", "(none)")
 
 Finance["MotherControl"].UseTab(3)
 
-Finance.Add("Listview", "x500 y80 w300 h150", ["Test"])
+Finance.Add("Edit", "x10 y65 w780 h300 vNoteDisplay Background211a1a cWhite")
 
-Finance.Add("Groupbox", "x20 y65 w400 h490 cWhite", "Jaar Overzicht")
-
-Finance.Add("Text", "x50 y115 cWhite", "Jaar: ")
-
-; Finance.Add("Edit", "x135 y115 w260 h50 vJaar -VScroll Background211a1a cWhite")
-Finance.Add("DropDownList", "x135 y115 w260 h100 vJaarSelector cWhite Background211a1a", ["2024", "2025"])
+Finance.Add("ComboBox", "x10 y375 w780 h300 vCombo Background211a1a")
 
 
-Finance.Add("Button", "x40 y190 w360 h50 vSelectInvoices cWhite", "Select Invoices")
-DoButtonStuff(Finance, "SelectInvoices", "211a1a", GenerateJaaroverzicht)
+Finance.Add("Button", "x10 y425 w188 h50 vAddNote", "Add")
+DoButtonStuff(Finance, "AddNote", "211a1a", AddNote)
 
-Finance.SetFont("s14 cWhite", "Jetbrains Mono")
-Finance.Add("Edit", "x40 y260 w360 h200 vSelectedInvoices +ReadOnly Background211a1a")
-Finance.SetFont("s16 cWhite", "Jetbrains Mono")
+Finance.Add("Button", "x+10 y425 w188 h50 vLoadNote", "Load")
+DoButtonStuff(Finance, "LoadNote", "211a1a", LoadNote)
 
-Finance.Add("Button", "x40 y480 w360 h50 vGenerateJaaroverzicht", "Generate Jaaroverzicht")
-DoButtonStuff(Finance, "GenerateJaaroverzicht", "211a1a", GenerateJaaroverzicht)
+Finance.Add("Button", "x+10 y425 w188 h50 vSaveNoteAs", "Save As")
+DoButtonStuff(Finance, "SaveNoteAs", "211a1a", SaveNoteAs)
+
+Finance.Add("Button", "x+10 y425 w188 h50 vClearNote", "Clear")
+DoButtonStuff(Finance, "ClearNote", "211a1a", ClearNote)
 
 Finance["MotherControl"].UseTab(4)
+
+Finance.Add("Listview", "x10 y65 w905 h150 vKwartaalinfo Background211a1a cWhite", ["Tijdvak", "Aangifte en betaling", "Betalingskenmerk"])
+
+Kwartaal := Finance["KwartaalInfo"]
+
+kwartaal.ModifyCol("1", "340")
+kwartaal.ModifyCol("3", "285")
+
+kwartaal.SetDarkMode()
+
+importKwartaal()
+
+Finance["MotherControl"].UseTab(5)
 
 Finance.Add("Button", "x10 y65 w250 h50 vInvoiceSettings", "Invoice Settings")
 DoButtonStuff(Finance, "InvoiceSettings", "211a1a", InvoiceSettingsGUI)
@@ -111,7 +128,8 @@ DoButtonStuff(Finance, "GeneralSettings", "211a1a", GeneralSettingsGUI)
 
 Finance.OnEvent("Close", ExitGui)
 Finance.Show("w1120 h700")
-ImportTransactions()
+ImportWithdraw()
+ImportDeposits()
 ImportInvoices()
 TotalProfits()
 ^/:: {

@@ -5,156 +5,236 @@
 #Include C:\Users\tijnb\Desktop\Programming\Autohotkey\Personal\MainData\sqlite_error.ahk2
 ; #Region -- Tab Change --
 
+; OnTabChanges(*) {
+;     CurrentTab := Finance["MotherControl"].Text
+;     If (CurrentTab = "Invoices") {
+;         ScreenWidth := A_ScreenWidth
+;         ScreenHeight := A_ScreenHeight
+
+;         GuiWidth := 1120
+;         GuiHeight := 700
+
+;         DebugLog("--- Switched to Invoice Tab ---")
+
+;         DebugLog("GuiWidth = " GuiWidth)
+;         DebugLog("GuiHeight = " GuiHeight)
+
+;         MotherControlWidth := GuiWidth - 20
+;         MotherControlHeight := GuiHeight - 20
+
+;         DebugLog("MotherControlWidth = " MotherControlWidth)
+;         DebugLog("MotherControlHeight = " MotherControlHeight)
+
+;         CenterX := (ScreenWidth - GuiWidth * 1.25) / 2
+;         CenterY := (ScreenHeight - GuiHeight * 1.25) / 2
+
+;         Xpos := (ScreenWidth - GuiWidth * 1.25) / 2
+;         Ypos := (ScreenHeight - GuiHeight * 1.25) / 2 - 20
+
+;         DebugLog("Xpos = " Xpos)
+;         DebugLog("Ypos = " Ypos)
+
+;         DebugLog("CenterX = " CenterX)
+;         DebugLog("CenterY = " CenterY)
+
+
+;         Finance.Show("x" CenterX "y" CenterY "w" GuiWidth "h" GuiHeight)
+;         ; Finance.Show("x" Xpos "y" Xpos "w" GuiWidth "h" GuiHeight)
+;         ; Finance.Show("x" CenterX "y" Xpos "w" GuiWidth "h" GuiHeight)
+
+
+;         Finance["MotherControl"].Move(, , MotherControlWidth MotherControlHeight)
+
+;     }
+;     Else if (CurrentTab = "Withdraws") {
+;         ScreenWidth := A_ScreenWidth
+;         ScreenHeight := A_ScreenHeight
+
+;         ; GuiWidth := 745
+;         GuiWidth := 1060
+;         GuiHeight := 700
+
+;         DebugLog("-- Switched to Withdraws -- ")
+
+;         DebugLog("GuiWidth = " GuiWidth)
+;         DebugLog("GuiHeight = " GuiHeight)
+
+;         MotherControlWidth := GuiWidth - 20
+;         MotherControlHeight := GuiHeight - 20
+
+;         DebugLog("MotherControlWidth = " MotherControlWidth)
+;         DebugLog("MotherControlHeight = " MotherControlHeight)
+
+;         CenterX := (ScreenWidth - GuiWidth * 1.25) / 2
+;         CenterY := (ScreenHeight - GuiHeight * 1.25) / 2
+
+;         Xpos := (ScreenWidth - GuiWidth * 1.25) / 2
+;         Ypos := (ScreenHeight - GuiHeight * 1.25) / 2.5
+
+;         DebugLog("Xpos = " Xpos)
+;         DebugLog("Ypos = " Ypos)
+
+;         DebugLog("CenterX = " CenterX)
+;         DebugLog("CenterY = " CenterY)
+
+
+;         Finance.Show("x" CenterX "y" CenterY "w" GuiWidth "h" GuiHeight)
+;         ; Finance.Show("x" Xpos "y" Xpos "w" GuiWidth "h" GuiHeight)
+
+;         Finance["MotherControl"].Move(, , MotherControlWidth MotherControlHeight)
+;     }
+;     Else if (CurrentTab = "Notes") {
+;         ScreenWidth := A_ScreenWidth
+;         ScreenHeight := A_ScreenHeight
+
+;         GuiWidth := 800
+;         GuiHeight := 700
+
+;         DebugLog("-- Switched to Notes -- ")
+
+;         DebugLog("GuiWidth = " GuiWidth)
+;         DebugLog("GuiHeight = " GuiHeight)
+
+;         MotherControlWidth := GuiWidth - 20
+;         MotherControlHeight := GuiHeight - 20
+
+;         DebugLog("MotherControlWidth = " MotherControlWidth)
+;         DebugLog("MotherControlHeight = " MotherControlHeight)
+
+;         CenterX := (ScreenWidth - GuiWidth * 1.25) / 2
+;         CenterY := (ScreenHeight - GuiHeight * 1.25) / 2
+
+;         Xpos := (ScreenWidth - GuiWidth * 1.25) / 2
+;         Ypos := (ScreenHeight - GuiHeight * 1.25) / 2.5
+
+;         DebugLog("Xpos = " Xpos)
+;         DebugLog("Ypos = " Ypos)
+
+;         DebugLog("CenterX = " CenterX)
+;         DebugLog("CenterY = " CenterY)
+
+
+;         Finance.Show("x" CenterX "y" CenterY "w" GuiWidth "h" GuiHeight)
+;         ; Finance.Show("x" Xpos "y" Xpos "w" GuiWidth "h" GuiHeight)
+
+;         Finance["MotherControl"].Move(, , MotherControlWidth MotherControlHeight)
+;     }
+;     Else If (CurrentTab = "Finances") {
+;         ScreenWidth := A_ScreenWidth
+;         ScreenHeight := A_ScreenHeight
+
+;         GuiWidth := 1120
+;         GuiHeight := 600
+
+;         DebugLog("-- Switched to Finances --")
+
+;         DebugLog("GuiWidth = " GuiWidth)
+;         DebugLog("GuiHeight = " GuiHeight)
+
+;         MotherControlWidth := GuiWidth - 20
+;         MotherControlHeight := GuiHeight - 20
+
+;         DebugLog("MotherControlWidth = " MotherControlWidth)
+;         DebugLog("MotherControlHeight = " MotherControlHeight)
+
+;         CenterX := (ScreenWidth - GuiWidth * 1.25) / 2
+;         CenterY := (ScreenHeight - GuiHeight * 1.25) / 2
+
+;         Xpos := (ScreenWidth - GuiWidth * 1.25) / 2
+;         Ypos := (ScreenHeight - GuiHeight * 1.25) / 2.5
+
+;         DebugLog("Xpos = " Xpos)
+;         DebugLog("Ypos = " Ypos)
+
+;         DebugLog("CenterX = " CenterX)
+;         DebugLog("CenterY = " CenterY)
+
+
+;         Finance.Show("x" CenterX "y" CenterY "w" GuiWidth "h" GuiHeight)
+;         ; Finance.Show("x" Xpos "y" Xpos "w" GuiWidth "h" GuiHeight)
+
+;         Finance["MotherControl"].Move(, , MotherControlWidth MotherControlHeight)
+;     }
+;     Else If (CurrentTab = "Settings") {
+;         ScreenWidth := A_ScreenWidth
+;         ScreenHeight := A_ScreenHeight
+
+;         GuiWidth := 600
+;         GuiHeight := 210
+
+;         DebugLog("-- Switched to Settings --")
+
+;         DebugLog("GuiWidth = " GuiWidth)
+;         DebugLog("GuiHeight = " GuiHeight)
+
+;         MotherControlWidth := GuiWidth - 20
+;         MotherControlHeight := GuiHeight - 20
+
+;         DebugLog("MotherControlWidth = " MotherControlWidth)
+;         DebugLog("MotherControlHeight = " MotherControlHeight)
+
+;         CenterX := (ScreenWidth - GuiWidth * 1.25) / 2
+;         CenterY := (ScreenHeight - GuiHeight * 1.25) / 2
+
+;         Xpos := (ScreenWidth - GuiWidth * 1.25) / 2
+;         Ypos := (ScreenHeight - GuiHeight * (1.25) / 2) - 20
+
+;         DebugLog("Xpos = " Xpos)
+;         DebugLog("Ypos = " Ypos)
+
+;         DebugLog("CenterX = " CenterX)
+;         DebugLog("CenterY = " CenterY)
+
+
+;         Finance.Show("x" CenterX "y" CenterY "w" GuiWidth "h" GuiHeight)
+;         ; Finance.Show("x" Xpos "y" Xpos "w" GuiWidth "h" GuiHeight)
+;         ; Finance.Show("x" CenterX "y" Xpos "w" GuiWidth "h" GuiHeight)
+
+;         Finance["MotherControl"].Move(, , MotherControlWidth MotherControlHeight)
+;     }
+; }
+
 OnTabChanges(*) {
+    static options := Map(
+        "Invoices", { Width: 1120, Height: 700 },
+            "Withdraws", { Width: 1060, Height: 700 },
+            "Notes", { Width: 800, Height: 700 },
+            "Important Info", { Width: 925, Height: 400 },
+            "Settings", { Width: 600, Height: 210 },
+    )
     CurrentTab := Finance["MotherControl"].Text
-    If (CurrentTab = "Invoices") {
-        ScreenWidth := A_ScreenWidth
-        ScreenHeight := A_ScreenHeight
-
-        GuiWidth := 1120
-        GuiHeight := 700
-
-        DebugLog("--- Switched to Invoice Tab ---")
-
-        DebugLog("GuiWidth = " GuiWidth)
-        DebugLog("GuiHeight = " GuiHeight)
-
-        MotherControlWidth := GuiWidth - 20
-        MotherControlHeight := GuiHeight - 20
-
-        DebugLog("MotherControlWidth = " MotherControlWidth)
-        DebugLog("MotherControlHeight = " MotherControlHeight)
-
-        CenterX := (ScreenWidth - GuiWidth * 1.25) / 2
-        CenterY := (ScreenHeight - GuiHeight * 1.25) / 2
-
-        Xpos := (ScreenWidth - GuiWidth * 1.25) / 2
-        Ypos := (ScreenHeight - GuiHeight * 1.25) / 2 - 20
-
-        DebugLog("Xpos = " Xpos)
-        DebugLog("Ypos = " Ypos)
-
-        DebugLog("CenterX = " CenterX)
-        DebugLog("CenterY = " CenterY)
-
-
-        Finance.Show("x" CenterX "y" CenterY "w" GuiWidth "h" GuiHeight)
-        ; Finance.Show("x" Xpos "y" Xpos "w" GuiWidth "h" GuiHeight)
-        ; Finance.Show("x" CenterX "y" Xpos "w" GuiWidth "h" GuiHeight)
-
-
-        Finance["MotherControl"].Move(, , MotherControlWidth MotherControlHeight)
-
+    if !options.Has(CurrentTab) {
+        throw Error()
     }
-    Else if (CurrentTab = "Withdraws") {
-        ScreenWidth := A_ScreenWidth
-        ScreenHeight := A_ScreenHeight
+    ScreenWidth := A_ScreenWidth
+    ScreenHeight := A_ScreenHeight
+    GuiWidth := options[CurrentTab].Width
+    GuiHeight := options[CurrentTab].Height
+    DebugLog("--- Switched to " CurrentTab " Tab ---")
 
-        GuiWidth := 745
-        GuiHeight := 700
+    DebugLog("GuiWidth = " GuiWidth)
+    DebugLog("GuiHeight = " GuiHeight)
 
-        DebugLog("-- Switched to Withdraws -- ")
+    MotherControlWidth := GuiWidth - 20
+    MotherControlHeight := GuiHeight - 20
 
-        DebugLog("GuiWidth = " GuiWidth)
-        DebugLog("GuiHeight = " GuiHeight)
+    DebugLog("MotherControlWidth = " MotherControlWidth)
+    DebugLog("MotherControlHeight = " MotherControlHeight)
+    CenterX := (ScreenWidth - GuiWidth * 1.25) / 2
+    CenterY := (ScreenHeight - GuiHeight * 1.25) / 2
 
-        MotherControlWidth := GuiWidth - 20
-        MotherControlHeight := GuiHeight - 20
+    Xpos := (ScreenWidth - GuiWidth * 1.25) / 2
+    Ypos := (ScreenHeight - GuiHeight * 1.25) / 2 - 20
 
-        DebugLog("MotherControlWidth = " MotherControlWidth)
-        DebugLog("MotherControlHeight = " MotherControlHeight)
+    DebugLog("Xpos = " Xpos)
+    DebugLog("Ypos = " Ypos)
 
-        CenterX := (ScreenWidth - GuiWidth * 1.25) / 2
-        CenterY := (ScreenHeight - GuiHeight * 1.25) / 2
-
-        Xpos := (ScreenWidth - GuiWidth * 1.25) / 2
-        Ypos := (ScreenHeight - GuiHeight * 1.25) / 2.5
-
-        DebugLog("Xpos = " Xpos)
-        DebugLog("Ypos = " Ypos)
-
-        DebugLog("CenterX = " CenterX)
-        DebugLog("CenterY = " CenterY)
+    DebugLog("CenterX = " CenterX)
+    DebugLog("CenterY = " CenterY)
 
 
-        Finance.Show("x" CenterX "y" CenterY "w" GuiWidth "h" GuiHeight)
-        ; Finance.Show("x" Xpos "y" Xpos "w" GuiWidth "h" GuiHeight)
-
-        Finance["MotherControl"].Move(, , MotherControlWidth MotherControlHeight)
-    }
-    Else If (CurrentTab = "Finances") {
-        ScreenWidth := A_ScreenWidth
-        ScreenHeight := A_ScreenHeight
-
-        GuiWidth := 1120
-        GuiHeight := 600
-
-        DebugLog("-- Switched to Finances --")
-
-        DebugLog("GuiWidth = " GuiWidth)
-        DebugLog("GuiHeight = " GuiHeight)
-
-        MotherControlWidth := GuiWidth - 20
-        MotherControlHeight := GuiHeight - 20
-
-        DebugLog("MotherControlWidth = " MotherControlWidth)
-        DebugLog("MotherControlHeight = " MotherControlHeight)
-
-        CenterX := (ScreenWidth - GuiWidth * 1.25) / 2
-        CenterY := (ScreenHeight - GuiHeight * 1.25) / 2
-
-        Xpos := (ScreenWidth - GuiWidth * 1.25) / 2
-        Ypos := (ScreenHeight - GuiHeight * 1.25) / 2.5
-
-        DebugLog("Xpos = " Xpos)
-        DebugLog("Ypos = " Ypos)
-
-        DebugLog("CenterX = " CenterX)
-        DebugLog("CenterY = " CenterY)
-
-
-        Finance.Show("x" CenterX "y" CenterY "w" GuiWidth "h" GuiHeight)
-        ; Finance.Show("x" Xpos "y" Xpos "w" GuiWidth "h" GuiHeight)
-
-        Finance["MotherControl"].Move(, , MotherControlWidth MotherControlHeight)
-    }
-    Else If (CurrentTab = "Settings") {
-        ScreenWidth := A_ScreenWidth
-        ScreenHeight := A_ScreenHeight
-
-        GuiWidth := 540
-        GuiHeight := 210
-
-        DebugLog("-- Switched to Settings --")
-
-        DebugLog("GuiWidth = " GuiWidth)
-        DebugLog("GuiHeight = " GuiHeight)
-
-        MotherControlWidth := GuiWidth - 20
-        MotherControlHeight := GuiHeight - 20
-
-        DebugLog("MotherControlWidth = " MotherControlWidth)
-        DebugLog("MotherControlHeight = " MotherControlHeight)
-
-        CenterX := (ScreenWidth - GuiWidth * 1.25) / 2
-        CenterY := (ScreenHeight - GuiHeight * 1.25) / 2
-
-        Xpos := (ScreenWidth - GuiWidth * 1.25) / 2
-        Ypos := (ScreenHeight - GuiHeight * (1.25) / 2) - 20
-
-        DebugLog("Xpos = " Xpos)
-        DebugLog("Ypos = " Ypos)
-
-        DebugLog("CenterX = " CenterX)
-        DebugLog("CenterY = " CenterY)
-
-
-        Finance.Show("x" CenterX "y" CenterY "w" GuiWidth "h" GuiHeight)
-        ; Finance.Show("x" Xpos "y" Xpos "w" GuiWidth "h" GuiHeight)
-        ; Finance.Show("x" CenterX "y" Xpos "w" GuiWidth "h" GuiHeight)
-
-        Finance["MotherControl"].Move(, , MotherControlWidth MotherControlHeight)
-    }
+    Finance.Show("x" CenterX "y" CenterY "w" GuiWidth "h" GuiHeight)
+    Finance["MotherControl"].Move(, , MotherControlWidth MotherControlHeight)
 }
 
 ; #EndRegion -- Tab Change --
@@ -229,6 +309,7 @@ ScanInvoices(*) {
 
     selectStatement := db.prepare("select InvoiceID from Invoices where InvoiceID=?")
     insertStatement := db.prepare("INSERT INTO Invoices (InvoiceID, InvoiceDate, Excl, BTW, Incl) VALUES(?,?,?,?,?)")
+    IntoDeposits := db.prepare("INSERT INTO Deposit (Date, Amount) VALUES(?,?)")
     Loop Files, InvoiceDirectory "\*.xlsx", "R"
     {
         if (SubStr(A_LoopFileName, 1, 1) == "~")
@@ -238,6 +319,7 @@ ScanInvoices(*) {
 
         if (!selectStatement.all(ExtractedData[1]).Length) {
             insertStatement.all(ExtractedData[1], ExtractedData[2], ExtractedData[3], ExtractedData[4], ExtractedData[5])
+            IntoDeposits.all(ExtractedData[2], ExtractedData[5])
         }
     }
     Excel.Quit()
@@ -275,6 +357,7 @@ TotalProfits(*) {
 ReloadInvoices(*) {
     DebugLog("Started Reload Invoice...")
     Finance["Invoices"].Delete()
+    ScanInvoices()
     ImportInvoices()
     DebugLog("Reload Invoices Succesfull.")
 }
@@ -358,21 +441,22 @@ MoveToBin(*) {
     }
 }
 
-SelectJaarInvoices(*) {
-    SelectedJaar := Finance["JaarSelector"].Text
-    SelectedInvoices := FileSelect("M", "G:\My Drive\Bakker Services\Facturen\" . SelectedJaar, "Select Jaar Invoices")
-    for LoopedInvoices in SelectedInvoices
-    {
-        SplitPath(LoopedInvoices, &name)
-        ; msgbox name
-        SplitName := StrSplit(name, "_")
-        EditPaste(SplitName[2] " - " SplitName[3] "`r" "`n", Finance["SelectedInvoices"])
-    }
-}
+; SelectJaarInvoices(*) {
+;     SelectedJaar := Finance["JaarSelector"].Text
+;     SelectedInvoices := FileSelect("M", "G:\My Drive\Bakker Services\Facturen\" . SelectedJaar, "Select Jaar Invoices")
+;     for LoopedInvoices in SelectedInvoices
+;     {
+;         SplitPath(LoopedInvoices, &name)
+;         ; msgbox name
+;         SplitName := StrSplit(name, "_")
+;         EditPaste(SplitName[2] " - " SplitName[3] "`r" "`n", Finance["SelectedInvoices"])
+;     }
+; }
 
-GenerateJaaroverzicht(*) {
-    SelectJaarInvoices()
-}
+; GenerateJaaroverzicht(*) {
+;     SelectJaarInvoices()
+;     GetInvoiceData()
+; }
 
 ; db := sqlite("C:\Users\tijnb\Desktop\Programming\Autohotkey\Personal\MainData\FinanceData.sqlite", "C:\Users\tijnb\Desktop\Programming\Autohotkey\Personal\MainData\sqlite3.dll")
 
@@ -388,7 +472,7 @@ GenerateJaaroverzicht(*) {
 ;     DebugLog(" --- " "`n" "InvoiceID : " row.InvoiceID "`n" "Invoice Date : " row.InvoiceDate "`n" "Excl BTW : " roundedExcl "`n" "BTW : " roundedBTW "`n" "Incl BTW : " roundedIncl)
 ; }
 
-GetInvoiceData(InvoiceID) {
+GetInvoiceData(*) {
     db := sqlite("C:\Users\tijnb\Desktop\Programming\Autohotkey\Personal\MainData\FinanceData.sqlite", "C:\Users\tijnb\Desktop\Programming\Autohotkey\Personal\MainData\sqlite3.dll")
     select_id := db.prepare("SELECT InvoiceID FROM Invoices")
     rows := select_id.all()
@@ -410,12 +494,12 @@ ChangeInvoiceNumber(*) {
 
 ; #Region -- Import Withdraws --
 
-ImportTransactions(*) {
+ImportWithdraw(*) {
 
     Finance["Withdraws"].Focus()
     db := sqlite("C:\Users\tijnb\Desktop\Programming\Autohotkey\Personal\MainData\FinanceData.sqlite", "C:\Users\tijnb\Desktop\Programming\Autohotkey\Personal\MainData\sqlite3.dll")
 
-    select_statement := db.prepare("SELECT Date, Amount, Description FROM Transactions")
+    select_statement := db.prepare("SELECT Date, Amount, Description FROM Withdraw")
     rows := select_statement.all()
 
     for row in rows
@@ -425,6 +509,28 @@ ImportTransactions(*) {
     }
 }
 ; #EndRegion -- Import Withdraws --
+
+; #Region -- Import Deposits --
+
+ImportDeposits(*) {
+    Finance["Deposits"].Focus()
+    db := sqlite("C:\Users\tijnb\Desktop\Programming\Autohotkey\Personal\MainData\FinanceData.sqlite", "C:\Users\tijnb\Desktop\Programming\Autohotkey\Personal\MainData\sqlite3.dll")
+
+    select_statement := db.prepare("SELECT Date, Amount, Description FROM Deposit")
+    ; select_statement := db.prepare("SELECT InvoiceDate, Incl FROM Invoices")
+    rows := select_statement.all()
+
+    for row in rows
+    {
+        ; Amount := Round(row.Incl, 2)
+        Amount := Round(row.Amount, 2)
+        Finance["Deposits"].Add(, row.Date, Amount, row.Description)
+        ; Finance["Deposits"].Add(, row.InvoiceDate, Amount, "Tring Tring")
+    }
+}
+
+
+; #EndRegion -- Import Deposits --
 
 ; #Region -- Deposit --
 
@@ -437,10 +543,11 @@ AppendDeposit(*) {
             MsgBox "You can only Enter Numbers and dots into the Amount box"
     } Else If (DepositAmount != "") && (DepositDescription != "") {
         CurrentDate := A_DD "-" A_MM "-" A_YYYY
-        insertStatement := db.prepare("INSERT INTO Transactions (Date, Amount, Description) VALUES(?,?,?)")
+        insertStatement := db.prepare("INSERT INTO Deposit (Date, Amount, Description) VALUES(?,?,?)")
         insertStatement.all(CurrentDate, DepositAmount, DepositDescription)
-        Finance["Withdraws"].Delete()
-        ImportTransactions()
+        Finance["Deposits"].Focus()
+        Finance["Deposits"].Delete()
+        ImportDeposits()
         DebugLog("DepositAmount = " DepositAmount "`n" "DepositDescription = " DepositDescription)
         DepositGui.Destroy()
     }
@@ -456,10 +563,11 @@ AppendWithdrawl(*) {
             MsgBox "You can only Enter Numbers and dots into the Amount box"
     } Else If (WithdrawAmount != "") && (WithdrawDescription != "") {
         CurrentDate := A_DD "-" A_MM "-" A_YYYY
-        insertStatement := db.prepare("INSERT INTO Transactions (Date, Amount, Description) VALUES(?,?,?)")
+        insertStatement := db.prepare("INSERT INTO Withdraw (Date, Amount, Description) VALUES(?,?,?)")
         insertStatement.all(CurrentDate, "-" WithdrawAmount, WithdrawDescription)
+        Finance["Withdraws"].Focus()
         Finance["Withdraws"].Delete()
-        ImportTransactions()
+        ImportWithdraw()
         DebugLog("WithdrawAmount = " WithdrawAmount "`n" "WithdrawDescription = " WithdrawDescription)
         WithdrawGui.Destroy()
     }
@@ -467,11 +575,34 @@ AppendWithdrawl(*) {
 
 ; #EndRegion -- Deposit
 
-; #Region -- Withdraw --
+; #Region -- Withdraw Total Profit --
 
-; Finance["Withdraws"].Focus()
+TotalProfitsWithdraws(*) {
 
-; #EndRegion -- Withdraw--
+    Total1 := 0
+    Total2 := 0
+    Total3 := 0
+
+    Loop Finance["Invoices"].GetCount() {
+        New1 := Finance["Withdraws"].GetText(A_Index, 3)
+        New2 := Finance["Withdraws"].GetText(A_Index, 4)
+        New3 := Finance["Withdraws"].GetText(A_Index, 5)
+
+        Total1 += New1, Total2 += New2, Total3 += New3
+
+    }
+
+    Total1 := Format("{:0.2f}", Total1)
+    Total2 := Format("{:0.2f}", Total2)
+    Total3 := Format("{:0.2f}", Total3)
+
+    Finance["ExclBTW"].Text := Total1
+    Finance["BTW"].Text := Total2
+    Finance["InclBTW"].Text := Total3
+
+}
+
+; #EndRegion -- Withdraw Total Profit--
 
 ; WithdrawGuiHandler(*) {
 ;     WithdrawGui.Show("w780 h280")
@@ -481,7 +612,7 @@ AppendWithdrawl(*) {
 ReloadWithdraws(*) {
     WinActivate("ahk_id" FinanceHWND)
     Finance["Withdraws"].Delete()
-    ImportTransactions()
+    ImportWithdraw()
 }
 
 OpenWithdraws(*) {
@@ -541,4 +672,36 @@ ExitGui(*) {
 
 ActivateTab(tabname) {
     Finance[tabname].Choose
+}
+
+LoadNote(*) {
+    SelectedFile := FileSelect("1 8", "G:\My Drive\Bakker Services\Administratie\Notes", "Finance Notes")
+    RedFile := FileRead(SelectedFile)
+    ClearNote()
+    Finance["NoteDisplay"].Value := RedFile
+}
+
+ClearNote(*) {
+    Finance["NoteDisplay"].Value := ""
+}
+
+AddNote(*) {
+
+}
+
+SaveNoteAs(*) {
+
+}
+
+importKwartaal(*) {
+    db := sqlite("C:\Users\tijnb\Desktop\Programming\Autohotkey\Personal\MainData\FinanceData.sqlite", "C:\Users\tijnb\Desktop\Programming\Autohotkey\Personal\MainData\sqlite3.dll")
+
+    select_statement := db.prepare("SELECT tijdvak, betaling, kenmerk FROM KwartaalData")
+    rows := select_statement.all()
+
+    for row in rows
+    {
+        Finance["KwartaalInfo"].Add(, row.tijdvak, row.betaling, row.kenmerk)
+    }
+
 }

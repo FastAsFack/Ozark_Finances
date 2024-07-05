@@ -27,8 +27,8 @@ WithdrawGuiHandler(*) {
 
     WithdrawGui.Show("w780 h280")
 
-
-    SetWindowColor(WinExist("A"), 0x2B2B2B, 0x2B2B2B, 0x2B2B2B)
+    WithdrawGui.SetWindowColor(, "2b2b2b")
+    ; SetWindowColor(WinExist("A"), 0x2B2B2B, 0x2B2B2B, 0x2B2B2B)
 }
 
 DepositGuiHandler(*) {
@@ -54,7 +54,8 @@ DepositGuiHandler(*) {
 
     DepositGui.Show("w780 h280")
 
-    SetWindowColor(WinExist("A"), 0x2B2B2B, 0x2B2B2B, 0x2B2B2B)
+    DepositGui.SetWindowColor(, "2b2b2b")
+    ; SetWindowColor(WinExist("A"), 0x2B2B2B, 0x2B2B2B, 0x2B2B2B)
 }
 
 GenerateInvoiceGUI(*) {
@@ -62,7 +63,8 @@ GenerateInvoiceGUI(*) {
     Generate.Title := "Generate Invoice"
 
     GenearteHWND := Generate.Hwnd
-    SetWindowColor(GenearteHWND, RgbToBgr(0x2B2B2B), 0x2B2B2B, 0x2B2B2B)
+    Generate.SetWindowColor(, "2b2b2b")
+    ; SetWindowColor(GenearteHWND, RgbToBgr(0x2B2B2B), 0x2B2B2B, 0x2B2B2B)
 
     Generate.SetFont("s16", "Jetbrains Mono")
     Generate.BackColor := "2b2b2b"
@@ -100,9 +102,9 @@ LogWindowGUI(*) {
     LogWindow["Logs"].UseTab(3)
     LogWindow.Add("Edit", "w860 h425 x10 y45 Background211a1a vFinanceLogs")
     SetTimer((*) => LoadLogs("C:\Users\tijnb\Desktop\Programming\Autohotkey\Personal\library\Debuglog\Logs-v2\Finances_V2.ahk2", LogWindow["FinanceLogs"]), 1000)
-    SetWindowColor(LogWindowHWND, RgbToBgr(0xFFFFFF), 0x2B2B2B, 0x2B2B2B)
+    ; SetWindowColor(LogWindowHWND, RgbToBgr(0xFFFFFF), 0x2B2B2B, 0x2B2B2B)
     LogWindow.Show("w880 h480")
-
+    LogWindow.SetWindowColor(, "2b2b2b")
 }
 
 InvoiceSettingsGUI(*) {
@@ -196,6 +198,31 @@ GeneralSettingsGUI(*) {
 
     GeneralSettings.Show("w380")
 }
+
+; GenerateJaarOverzichtGUI(*) {
+;     jaar := Gui()
+
+;     jaar.Add("Listview", "x500 y80 w300 h150", ["Test"])
+
+;     jaar.Add("Groupbox", "x20 y65 w400 h490 cWhite", "Jaar Overzicht")
+
+;     jaar.Add("Text", "x50 y115 cWhite", "Jaar: ")
+
+;     ; jaar.Add("Edit", "x135 y115 w260 h50 vJaar -VScroll Background211a1a cWhite")
+;     jaar.Add("DropDownList", "x135 y115 w260 h100 vJaarSelector cWhite Background211a1a", ["2024", "2025"])
+
+
+;     jaar.Add("Button", "x40 y190 w360 h50 vSelectInvoices cWhite", "Select Invoices")
+
+;     jaar.SetFont("s14 cWhite", "Jetbrains Mono")
+;     jaar.Add("Edit", "x40 y260 w360 h200 vSelectedInvoices +ReadOnly Background211a1a")
+;     jaar.SetFont("s16 cWhite", "Jetbrains Mono")
+
+;     jaar.Add("Button", "x40 y480 w360 h50 vGenerateJaaroverzicht", "Generate Jaaroverzicht")
+
+;     jaar.Show("w500 h600")
+
+; }
 
 
 RgbToBgr(color) => ((Color >> 16) & 0xFF) | (Color & 0x00FF00) | ((Color & 0xFF) << 16)
